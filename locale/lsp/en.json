@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Coding LSP",
+    "description": "TypeScript and JavaScript navigation inside the isolated coding preset; inherited by child agents."
+  }
+}

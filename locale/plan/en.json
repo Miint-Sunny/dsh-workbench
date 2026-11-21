@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Full plan",
+    "description": "Shows the full plan in the conversation so any part can be quoted in a reply; sending a reply during review requests changes. Turn off to restore the stock plan card and sidebar preview."
+  }
+}

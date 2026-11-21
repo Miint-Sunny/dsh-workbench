@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Workspace folders and permissions",
+    "description": "Adds Workspace settings… to the workspace menu in the sidebar for adding subfolders and external folders. A subfolder becomes a separate workspace whose sessions cannot write the main folder unless it is set to writable; under the Workspace Write permission, external folders are writable like the main folder. DSH does not restrict reading."
+  }
+}

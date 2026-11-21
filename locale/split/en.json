@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Side chat",
+    "description": "Opens another session next to the current one in the right sidebar, so you can send messages, approve and answer there. Adds \"Open in right sidebar\" to the session menu and a \"Side chat\" entry to the right sidebar's new tab page."
+  }
+}

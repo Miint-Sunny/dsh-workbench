@@ -1,0 +1,598 @@
+{
+  "fullOnlyRows": [
+    "dsh-workbench-presets",
+    "dsh-workbench-preset-switch"
+  ],
+  "officialRows": {
+    "session-title": [
+      "session-title-llm"
+    ]
+  },
+  "shared": {
+    "rows": [
+      "dsh-workbench"
+    ],
+    "lib": [
+      "lib/index.js",
+      "lib/bundle-guard.js",
+      "lib/features.js",
+      "lib/legacy-plugins.js",
+      "lib/official-rows.js"
+    ],
+    "client": [
+      "src/client/features.js",
+      "src/client/style.js",
+      "src/client/copy.js",
+      "src/client/controls.js",
+      "src/client/main.js"
+    ],
+    "helpers": {
+      "src/client/review.js": [
+        "fetchJson"
+      ]
+    },
+    "titles": {
+      "git-commands": {
+        "zh": {
+          "title": "提交和变更请求命令",
+          "description": "注册 `/commit`、`/push`、`/pr`、`/fix-ci` 四条斜杠命令。命令只发一条用户消息，让模型去做，审批照常。"
+        },
+        "en": {
+          "title": "Commit and change request commands",
+          "description": "Registers the slash commands /commit, /push, /pr and /fix-ci. Each sends one user message and lets the model do the work; approvals work as usual."
+        }
+      },
+      "tool-discovery": {
+        "zh": {
+          "title": "工具按需出现",
+          "description": "启用后默认作用于标准模式。顶层会话首请求只声明常驻工具和 `workbench_discover_tools`，其余工具由模型按需检索、选入。"
+        },
+        "en": {
+          "title": "On-demand tools",
+          "description": "When enabled, applies to Standard mode by default. The first request declares only resident tools and workbench_discover_tools; the model searches for and selects the rest on demand."
+        }
+      }
+    }
+  },
+  "packs": {
+    "usage": {
+      "title": {
+        "zh": "用量",
+        "en": "Usage"
+      },
+      "rows": [
+        "usage",
+        "quota",
+        "context",
+        "compaction"
+      ],
+      "lib": [
+        "lib/cache-life.js",
+        "lib/compaction-config.js",
+        "lib/compaction-policy.js",
+        "lib/compaction-prompt.js",
+        "lib/compaction-service.js",
+        "lib/compaction-state.js",
+        "lib/compaction.js",
+        "lib/context-config.js",
+        "lib/context-stats.js",
+        "lib/context-store.js",
+        "lib/context.js",
+        "lib/data-dir.js",
+        "lib/quota-adapters.js",
+        "lib/quota-config.js",
+        "lib/quota.js",
+        "lib/usage-breakdown.js",
+        "lib/usage-config.js",
+        "lib/usage-digest.js",
+        "lib/usage-holidays.js",
+        "lib/usage-overview.js",
+        "lib/usage-stats.js",
+        "lib/usage-store.js",
+        "lib/usage.js"
+      ],
+      "client": [
+        "src/client/context-copy.js",
+        "src/client/context-model.js",
+        "src/client/context.js",
+        "src/client/usage-model.js",
+        "src/client/usage-charts.js",
+        "src/client/usage-copy.js",
+        "src/client/usage-style.js",
+        "src/client/usage-chart-view.js",
+        "src/client/usage.js"
+      ],
+      "readme": {
+        "zh": {
+          "settings": [
+            "用量价目表和统计选项位于 `$DSH_HOME/dsh-workbench/usage.json`；额度选项位于 `quota.json`，默认缓存 300 秒、超时 10 秒。",
+            "闲时压缩默认关闭。按会话设置阈值，默认值和提示词在「设置 → 压缩」。"
+          ],
+          "limitations": [
+            "费用为估算值；缓存寿命来自本机样本。余额和额度查询需要联网及相应提供方凭据。",
+            "压缩只作用于配置名单中的预设。该单装包不提供代码模式和全开模式。"
+          ]
+        },
+        "en": {
+          "settings": [
+            "Usage prices and options are in `$DSH_HOME/dsh-workbench/usage.json`. Quota options are in `quota.json`, with a 300-second cache and 10-second timeout.",
+            "Idle compaction is disabled by default. Set thresholds per session; defaults and prompts are in Settings → Compaction."
+          ],
+          "limitations": [
+            "Costs are estimates and cache lifetime comes from local samples. Balance and quota queries need a network connection and provider credentials.",
+            "Compaction applies only to configured presets. This package does not provide Code mode or Full mode."
+          ]
+        }
+      }
+    },
+    "checkpoints": {
+      "title": {
+        "zh": "检查点",
+        "en": "Checkpoints"
+      },
+      "rows": [
+        "checkpoints",
+        "rerun",
+        "worktrees"
+      ],
+      "lib": [
+        "lib/checkpoints-files.js",
+        "lib/checkpoints-git.js",
+        "lib/checkpoints-state.js",
+        "lib/checkpoints-store.js",
+        "lib/checkpoints.js",
+        "lib/data-dir.js",
+        "lib/notify-state.js",
+        "lib/rerun-state.js",
+        "lib/rerun.js",
+        "lib/worktrees-safety.js",
+        "lib/worktrees-service.js",
+        "lib/worktrees.js"
+      ],
+      "client": [
+        "src/client/rerun.js",
+        "src/client/checkpoints.js",
+        "src/client/worktrees.js"
+      ],
+      "readme": {
+        "zh": {
+          "settings": [
+            "检查点默认保留 14 天、每会话最多 2048 MB、非 Git 文件最多 2 MB，首次工具执行前最多等待 5 秒。",
+            "分叉后归档原会话默认关闭。工作树清理默认使用 macOS 废纸篓。"
+          ],
+          "limitations": [
+            "Git 检查点包含未跟踪文件，不包含被忽略文件；非 Git 检查点只记录文件工具改动。仅改变大小写的重命名可能无法恢复。",
+            "会话运行中无法恢复。重新生成和编辑重发不支持含附件、引用或轮次内插入消息的提问。工作树创建不复制未提交文件。"
+          ]
+        },
+        "en": {
+          "settings": [
+            "Checkpoints default to 14 days, 2048 MB per session, 2 MB per non-Git file and a maximum 5-second wait before the first tool.",
+            "Archiving the original session after a fork is disabled. Worktree cleanup uses macOS Trash by default."
+          ],
+          "limitations": [
+            "Git checkpoints include untracked files but exclude ignored files; non-Git checkpoints track file-tool edits only. Case-only renames may not restore.",
+            "Restore is unavailable while a session runs. Regenerate and edit-and-resend do not support attachments, references or messages inserted during the turn. Worktree creation does not copy uncommitted files."
+          ]
+        }
+      }
+    },
+    "review": {
+      "title": {
+        "zh": "审查",
+        "en": "Review"
+      },
+      "rows": [
+        "review",
+        "local-review",
+        "plan",
+        "reply",
+        "git-commands"
+      ],
+      "lib": [
+        "lib/data-dir.js",
+        "lib/git-commands.js",
+        "lib/git-review/commit-message.js",
+        "lib/git-review/config.js",
+        "lib/git-review/diff.js",
+        "lib/git-review/git.js",
+        "lib/git-review/index.js",
+        "lib/git-review/repos.js",
+        "lib/git-review/routes.js",
+        "lib/git-review/service.js",
+        "lib/git-review/store.js",
+        "lib/local-review-copy.js",
+        "lib/local-review-manager.js",
+        "lib/local-review-snapshot.js",
+        "lib/local-review-state.js",
+        "lib/local-review-store.js",
+        "lib/local-review.js",
+        "lib/preset-locale.js",
+        "lib/plan.js",
+        "lib/reply.js",
+        "lib/review/copy.js",
+        "lib/review/index.js",
+        "lib/review/lines.js",
+        "lib/review/revert.js",
+        "lib/review/routes.js",
+        "lib/review/service.js",
+        "lib/checkpoints-git.js",
+        "lib/review/store.js",
+        "lib/workspace-folders-model.js",
+        "lib/workspace-folders-store.js"
+      ],
+      "client": [
+        "lib/review/copy.js",
+        "src/client/review.js",
+        "src/client/reply.js",
+        "src/client/plan.js",
+        "src/client/local-review-copy.js",
+        "src/client/local-review.js",
+        "src/client/review-panel-copy.js",
+        "src/client/review-panel-model.js",
+        "src/client/review-panel.js"
+      ],
+      "readme": {
+        "zh": {
+          "settings": [
+            "改动回退备份默认保留 `keepDays: 30` 天。本地审查默认使用主会话模型，可通过行配置 `model` 指定。",
+            "提交与变更请求命令的 `locale` 默认 `zh`，可改为 `en`。"
+          ],
+          "limitations": [
+            "回退要求会话停止且文件与看到的差异一致；会话进行中只能暂存。宿主重启后旧轮次可能不可用，保存的撤销记录仍保留；Git 范围的撤销只在当前窗口里可用。",
+            "本地审查不包含敏感文件、符号链接、二进制或过大文件；未跟踪文件需显式选入。斜杠命令会向模型发送任务，正常权限审批仍然有效。"
+          ]
+        },
+        "en": {
+          "settings": [
+            "Revert backups default to `keepDays: 30`. Local review uses the parent session model unless row config `model` overrides it.",
+            "Commit and change request commands default to `locale: zh`; `en` is also available."
+          ],
+          "limitations": [
+            "Rollbacks require an idle session and files matching the diff on screen; while the session runs, only staging works. Old turns may be unavailable after a host restart; saved undo records remain. Undo in Git scopes works only in the current window.",
+            "Local review excludes sensitive files, symbolic links, binary files and oversized files; untracked files require explicit inclusion. Slash commands send tasks to the model with normal permission approvals."
+          ]
+        }
+      }
+    },
+    "navigation": {
+      "title": {
+        "zh": "导航",
+        "en": "Navigation"
+      },
+      "rows": [
+        "organize",
+        "find",
+        "attention",
+        "command-palette",
+        "new-tab",
+        "turn-nav",
+        "session-header",
+        "browser-viewport",
+        "session-title"
+      ],
+      "lib": [
+        "lib/attention.js",
+        "lib/command-palette.js",
+        "lib/data-dir.js",
+        "lib/find.js",
+        "lib/new-tab.js",
+        "lib/organize-state.js",
+        "lib/organize.js",
+        "lib/session-header.js",
+        "lib/turn-nav.js",
+        "lib/browser-viewport.js",
+        "lib/session-title.js",
+        "lib/session-title-provider.js",
+        "lib/session-title-sample.js"
+      ],
+      "client": [
+        "src/client/organize.js",
+        "src/client/find.js",
+        "src/client/attention-model.js",
+        "src/client/attention.js",
+        "src/client/command-palette-model.js",
+        "src/client/command-palette.js",
+        "src/client/new-tab-model.js",
+        "src/client/new-tab.js",
+        "src/client/turn-nav-model.js",
+        "src/client/turn-nav.js",
+        "src/client/session-header.js",
+        "src/client/browser-viewport-model.js",
+        "src/client/browser-viewport.js",
+        "src/client/session-title.js"
+      ],
+      "readme": {
+        "zh": {
+          "settings": [
+            "在「设置 → 快捷键」移除「搜索会话」的 ⌘K，再将 ⌘K 分配给「命令面板」。",
+            "新标签页支持常用、列表和两列布局，最多置顶 8 个入口。轮次书签保存在当前浏览器。",
+            "会话标题默认 `tailMessages: 6`、`refreshEveryPrompts: 0`（轮末不自动重算）；`/retitle` 和侧栏会话菜单的「重新起名」参考首条和最近的对话重算。"
+          ],
+          "limitations": [
+            "「需要你处理」依赖会话整理。会话查找只搜索已显示的文字，跨文本节点的词可能无法匹配。",
+            "轮次导航和会话顶栏依赖当前 DSH 页面结构，不兼容时可能无法生效。",
+            "浏览器视口尺寸依赖当前官方浏览器卡片的页面结构，不兼容时按钮不会出现；只改页面排版的宽高，不模拟触摸、设备像素比和浏览器标识。",
+            "「会话标题」开着时，DSH 自带的「首条消息生成标题」在「插件」页显示为等待服务；停用这一行后它随即回来。开关的那一刻发出首条消息的新会话，可能只得到临时标题。"
+          ]
+        },
+        "en": {
+          "settings": [
+            "In Settings → Keyboard shortcuts, remove ⌘K from Search sessions, then assign it to Command palette.",
+            "New tabs offer Common, List and Two-column layouts with up to eight pinned entries. Turn bookmarks stay in the current browser.",
+            "Session titles default to `tailMessages: 6` and `refreshEveryPrompts: 0` (no automatic recompute at the end of turns); `/retitle` and Regenerate title in the sidebar session menu name the session again from the first and latest messages."
+          ],
+          "limitations": [
+            "The attention filter depends on session organization. Search only covers displayed text and may miss words split across text nodes.",
+            "Turn navigation and session header changes depend on the current DSH page structure and may not attach if it changes.",
+            "Browser viewport size depends on the current browser tab's page structure and does not attach if it changes; it only sets the layout width and height, and does not emulate touch, device pixel ratio or the user agent.",
+            "While Session titles is on, DSH's built-in first-message title row shows as waiting for a service on the Plugins page; it comes back as soon as this row is off. A new session started at the moment of switching may only get the temporary title."
+          ]
+        }
+      }
+    },
+    "pages": {
+      "title": {
+        "zh": "页面和设计",
+        "en": "Pages and design"
+      },
+      "rows": [
+        "pages",
+        "design"
+      ],
+      "lib": [
+        "lib/data-dir.js",
+        "lib/design-protocol.js",
+        "lib/design-store.js",
+        "lib/design.js",
+        "lib/pages-csp.js",
+        "lib/pages-error.js",
+        "lib/pages-inline.js",
+        "lib/pages-publish.js",
+        "lib/pages-read.js",
+        "lib/pages-routes.js",
+        "lib/pages-store.js",
+        "lib/pages-tool.js",
+        "lib/pages.js"
+      ],
+      "client": [
+        "lib/pages-csp.js",
+        "lib/pages-scripts.js",
+        "src/client/pages.js",
+        "lib/design-protocol.js",
+        "lib/design-bridge.js",
+        "src/client/design-copy.js",
+        "src/client/design-style.js",
+        "src/client/design.js"
+      ],
+      "readme": {
+        "zh": {
+          "settings": [
+            "网页发布保存版本；删除的页面保留 30 天。设计画布提供 1280×800 桌面画板和 375×812 手机画板。"
+          ],
+          "limitations": [
+            "设计画布依赖网页发布。每个内联资源最多 4 MiB，每版资源合计最多 16 MiB、64 个。",
+            "页面预览拦截 fetch、表单提交和外部图片。资源策略允许从 cdnjs、jsDelivr、unpkg 加载脚本和样式，从 Google Fonts 加载样式和字体。脚本默认关闭，点「运行脚本」后，页面可以跳转到其他网站并带走页面内容。"
+          ]
+        },
+        "en": {
+          "settings": [
+            "Published pages retain versions, and deleted pages are kept for 30 days. The canvas provides 1280×800 desktop and 375×812 phone artboards."
+          ],
+          "limitations": [
+            "Design canvas depends on page publishing. Each inlined asset can be up to 4 MiB, with up to 16 MiB and 64 assets per version.",
+            "The preview blocks fetch requests, form submissions and external images. Its resource policy allows scripts and styles from cdnjs, jsDelivr and unpkg, and styles and fonts from Google Fonts. Scripts are disabled by default. After you click Run scripts, the page can navigate to another site and send its content there."
+          ]
+        }
+      }
+    },
+    "settings": {
+      "title": {
+        "zh": "设置",
+        "en": "Settings"
+      },
+      "rows": [
+        "mcp",
+        "approval-rules",
+        "workspace-trust",
+        "settings-icons",
+        "workspace-folders",
+        "workspace-guard",
+        "model-settings",
+        "opencode-session"
+      ],
+      "lib": [
+        "lib/approval-rules-executable.js",
+        "lib/approval-rules-manager.js",
+        "lib/approval-rules-state.js",
+        "lib/approval-rules-store.js",
+        "lib/approval-rules.js",
+        "lib/data-dir.js",
+        "lib/mcp-manager.js",
+        "lib/mcp-state.js",
+        "lib/mcp-store.js",
+        "lib/mcp.js",
+        "lib/policy-scope.js",
+        "lib/workspace-trust-read.js",
+        "lib/workspace-trust-route.js",
+        "lib/workspace-trust-store.js",
+        "lib/workspace-trust.js",
+        "lib/settings-icons.js",
+        "lib/workspace-folders-model.js",
+        "lib/workspace-folders-store.js",
+        "lib/workspace-folders.js",
+        "lib/memory-store.js",
+        "lib/workspace-move-appcheck.mjs",
+        "lib/workspace-move-check.js",
+        "lib/workspace-move-fields.js",
+        "lib/workspace-move-helper.mjs",
+        "lib/workspace-move-launch.js",
+        "lib/workspace-move-log.js",
+        "lib/workspace-move-processes.js",
+        "lib/workspace-move-route.js",
+        "lib/workspace-move.js",
+        "lib/workspace-guard-copy.js",
+        "lib/workspace-guard-paths.js",
+        "lib/workspace-guard-shell.js",
+        "lib/workspace-guard.js",
+        "lib/model-settings/check.js",
+        "lib/model-settings/companion.js",
+        "lib/model-settings/default-model.js",
+        "lib/model-settings/discover.js",
+        "lib/model-settings/index.js",
+        "lib/model-settings/key-ref.js",
+        "lib/model-settings/opencode-session.js",
+        "lib/model-settings/routes.js"
+      ],
+      "client": [
+        "src/client/mcp-copy.js",
+        "src/client/mcp.js",
+        "src/client/approval-rules-copy.js",
+        "src/client/approval-rules.js",
+        "lib/workspace-trust-route.js",
+        "src/client/workspace-trust-model.js",
+        "src/client/workspace-trust-copy.js",
+        "src/client/workspace-trust.js",
+        "src/client/settings-icons.js",
+        "src/client/workspace-move-copy.js",
+        "src/client/workspace-move.js",
+        "src/client/workspace-folders-copy.js",
+        "src/client/workspace-folders.js",
+        "lib/model-settings/key-ref.js",
+        "lib/model-settings/companion.js",
+        "src/client/model-settings/keys.js",
+        "src/client/model-settings/protocol.js",
+        "src/client/model-settings/models.js",
+        "src/client/model-settings/retry.js",
+        "src/client/model-settings/discovery.js",
+        "src/client/model-settings/catalog.js",
+        "src/client/model-settings/status.js",
+        "src/client/model-settings/copy.js",
+        "src/client/model-settings/style.js",
+        "src/client/model-settings/store.js",
+        "src/client/model-settings/account.js",
+        "src/client/model-settings/nav.js",
+        "src/client/model-settings/parts.js",
+        "src/client/model-settings/api-key-input.js",
+        "src/client/model-settings/retry-policy.js",
+        "src/client/model-settings/list.js",
+        "src/client/model-settings/add.js",
+        "src/client/model-settings/models-editor.js",
+        "src/client/model-settings/detail.js",
+        "src/client/model-settings/section.js"
+      ],
+      "readme": {
+        "zh": {
+          "settings": [
+            "在「设置」中管理 MCP 可见性、放行规则和工作区信任。MCP 规则可按会话或项目设置，不修改服务器配置。",
+            "养鱼和订阅两页的图标由「设置页图标」这一行补上；这两个插件自己提供图标时，使用它们的。",
+            "工作区的文件夹和权限在侧边栏工作区的右键菜单「工作区设置…」中管理；主文件夹可以更换，会话一起迁移（需要退出 DSH，完成后自动重新打开）。",
+            "「模型设置」替换「设置 → 模型」页：提供商、模型和 API 密钥照旧保存在 DSH 的设置和凭据中，这一行不另存。「检查连接」每点一次发一条请求，最多输出 16 个 token，20 秒超时。「OpenCode 会话 ID」这一行可以单独开关。"
+          ],
+          "limitations": [
+            "放行规则只接受简单 bash 命令，不接受管道、重定向或展开；官方自动审查仍然执行。",
+            "工作区信任需要带工作台预览补丁 v3 的 dsh-better-sidebar 0.32.0。普通安装该依赖不保证支持。信任后的页面可能读取并向外发送获准的本地资源；只信任熟悉的项目。预览框自身导航到 dsh-app: 的隔离范围尚未完整验证。",
+            "工作区文件夹和权限只管写入，DSH 不限制读取。撤销可写或移除文件夹之前已经启动的后台作业，在退出前仍可写入原来的文件夹；子文件夹里事先存在的硬链接可以改到主文件夹中的同一文件。",
+            "更换文件夹后，撤销会把迁移后会话里新写的内容一起带回原位置；会话记录被改写、工作区登记或工作台数据有改动时不能撤销。会话记录中的旧路径不会更新。",
+            "命令超过分析上限或无法核实目标时也会询问。保护 DSH 数据和工作区在外部脚本文件（如 python3 script.py）、变量拼接、二进制、PTC run_code 直接调 fs、持久终端先前已 cd 或分段输入、指向内部目录的硬链接以及启用前已启动的后台进程上拦不住；在「完全权限」和子智能体中会直接阻止执行，但因 DSH 策略不弹窗而无法显示确认卡片。",
+            "「模型设置」的自定义设置只改显示名称、API 地址、API 协议和重试策略，其余字段要直接编辑 profile 的 `cordis.patch.yml`；目录外的模型的协议按模型 ID 推断，推断不对时要手动改。"
+          ]
+        },
+        "en": {
+          "settings": [
+            "Manage MCP visibility, approval rules and workspace trust in Settings. MCP rules can apply per session or project without changing server configuration.",
+            "The Settings page icons row adds icons for the dsh-bili-whale and dsh-plugin-subscriptions pages; when those plugins provide their own icons, theirs are used.",
+            "Manage the folders and permissions of a workspace from Workspace settings… in its sidebar menu; the main folder can be changed, and the sessions move along (DSH quits for the move and reopens when it finishes).",
+            "Model settings replaces Settings → Models: providers, models and API keys stay in DSH's settings and credentials, and this row keeps no copy. Check connection sends one request per click, with at most 16 output tokens and a 20-second timeout. The OpenCode session ID row can be switched separately."
+          ],
+          "limitations": [
+            "Approval rules accept simple bash commands only, without pipes, redirections or expansions. Official automatic review still runs.",
+            "Workspace trust requires dsh-better-sidebar 0.32.0 with workbench preview patch v3; a regular dependency installation does not guarantee support. Trusted pages may read and transmit permitted local assets. Trust only familiar projects. Isolation for preview-frame navigation to dsh-app: has not been fully verified.",
+            "Workspace folders and permissions govern writing only; DSH does not restrict reading. Background jobs started before a folder is set back to read-only or removed can still write there until they exit, and a hard link that already exists in a subfolder can change the same file in the main folder.",
+            "Undoing a folder change brings content written in the sessions since the move back with them; it is refused once a session log was rewritten or the workspace registry or workbench data changed. Paths written in session logs are not updated.",
+            "Commands that exceed inspection limits or have unverified targets can also prompt. Protect DSH data and workspaces cannot detect writes inside external scripts (such as python3 script.py), dynamic path construction, compiled binaries, direct fs calls inside PTC run_code, persistent terminals after an earlier cd or split input, pre-existing hard links into protected directories, or background jobs started before enabling this row; under Full access or in subagents it blocks execution directly because DSH's non-interactive approval policy suppresses confirmation prompts.",
+            "In Model settings, custom settings change only the display name, API address, API protocol and retry policy; edit other fields in the profile `cordis.patch.yml`. The protocol of a model outside the catalog is inferred from its ID; correct it by hand when the inference is wrong."
+          ]
+        }
+      }
+    },
+    "essentials": {
+      "title": {
+        "zh": "小功能",
+        "en": "Essentials"
+      },
+      "rows": [
+        "tasks",
+        "notify",
+        "keep-awake",
+        "memory",
+        "split",
+        "tool-discovery",
+        "session-cards"
+      ],
+      "lib": [
+        "lib/data-dir.js",
+        "lib/keep-awake-state.js",
+        "lib/keep-awake.js",
+        "lib/mcp-state.js",
+        "lib/memory-store.js",
+        "lib/memory.js",
+        "lib/notify-state.js",
+        "lib/notify.js",
+        "lib/policy-scope.js",
+        "lib/split.js",
+        "lib/tasks.js",
+        "lib/tool-discovery-state.js",
+        "lib/tool-discovery.js",
+        "lib/wrapup-state.js",
+        "lib/preset-locale.js",
+        "lib/session-cards-copy.js",
+        "lib/session-cards-state.js",
+        "lib/session-cards-store.js",
+        "lib/session-cards.js"
+      ],
+      "client": [
+        "src/client/dock.js",
+        "src/client/next-step.js",
+        "src/client/wrapup.js",
+        "src/client/notify.js",
+        "src/client/split.js",
+        "src/client/memory.js",
+        "lib/session-cards-state.js",
+        "src/client/session-cards.js",
+        "src/client/session-ask.js"
+      ],
+      "readme": {
+        "zh": {
+          "settings": [
+            "系统通知的四种事件默认开启；前台通知和回复首句预览默认关闭，可排除预设。",
+            "防休眠默认只在接通电源时启用，空闲宽限 `graceMs: 60000`；可通过 `alsoOnBattery` 启用电池供电。项目记忆上限 `maxBytes: 16384`。",
+            "工具发现行默认停用，启用后的默认目标为 `standard`。",
+            "新会话卡片的「模型提议另开会话时」默认为「询问」，可在插件页改成总是新建会话或总是在当前会话处理。"
+          ],
+          "limitations": [
+            "系统通知要在系统的通知设置里允许 DeepSeek Harness。项目记忆工具不提供给子智能体。",
+            "侧边对话不能与主区同时打开同一会话。此单装包不提供代码模式和全开模式。"
+          ]
+        },
+        "en": {
+          "settings": [
+            "All four notification events are enabled; foreground notifications and first-sentence previews are disabled. Presets can be excluded.",
+            "Keep awake requires AC power by default, with `graceMs: 60000`; `alsoOnBattery` enables battery operation. Project memory defaults to `maxBytes: 16384`.",
+            "Tool discovery is disabled by default and targets `standard` when enabled.",
+            "In New session cards, \"When the model offers a new session\" defaults to Ask; the plugin page can change it to always create a new session or always handle it in this session."
+          ],
+          "limitations": [
+            "Notifications must be allowed for DeepSeek Harness in the system notification settings. Project memory tools are not available to subagents.",
+            "Side chat cannot display the same session as the main area. This package does not provide Code mode or Full mode."
+          ]
+        }
+      }
+    }
+  },
+  "fullOnlyClient": [
+    "src/client/preset-switch-model.js",
+    "src/client/preset-switch-copy.js",
+    "src/client/preset-switch.js"
+  ]
+}

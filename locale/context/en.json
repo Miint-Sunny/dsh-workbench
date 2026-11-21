@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Context",
+    "description": "Inspect context composition, recent requests and compaction history on demand."
+  }
+}

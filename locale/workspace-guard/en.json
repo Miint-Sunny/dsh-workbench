@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Protect DSH data and workspaces",
+    "description": "Require human approval before an agent modifies DSH storages or sessions directories, or moves or deletes a registered workspace folder; approval rules do not auto-answer and auto review cannot bypass it."
+  }
+}

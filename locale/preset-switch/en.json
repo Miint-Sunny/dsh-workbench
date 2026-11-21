@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Switch agent preset",
+    "description": "After a session starts, switch between Standard mode, Code mode, and Full mode from the agent preset label in the session header. Switching is available while the session is idle. A confirmation shows the tool and system prompt changes and the estimated cache miss of the next request, with an option to compact the context first."
+  }
+}

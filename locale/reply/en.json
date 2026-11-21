@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Reply to selected text",
+    "description": "Adds \"Reply\" next to \"Quote text\" when you select text in a response: write a line, then add it with the quote to the input, or send it right away. Turning this off leaves only DSH's own \"Quote text\"."
+  }
+}

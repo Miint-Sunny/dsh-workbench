@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "余额与额度",
+    "description": "向提供商查询余额和额度：DeepSeek 的 API 余额，OpenCode Go 和 GLM Coding Plan 的额度窗口。仅在收到请求时查询，结果短暂缓存；密钥仅在宿主端使用。"
+  }
+}

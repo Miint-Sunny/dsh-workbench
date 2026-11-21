@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "System notifications",
+    "description": "Sends a system notification when a session completes or waits for approval, an answer, or a plan review, while DSH is not in the foreground."
+  }
+}

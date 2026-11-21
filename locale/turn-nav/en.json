@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Turn navigation",
+    "description": "Shows the conversation's turn navigation even with the right sidebar open: it appears once the main area is 380 px wide. The marks under the pointer grow; drag along the marks to jump turn by turn, move with the up and down arrow keys, or bookmark a turn."
+  }
+}

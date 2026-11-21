@@ -1,0 +1,40 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+const stats = await import('../lib/usage-stats.js').catch(e => { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e; return {} })
+const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-7, `${a} != ${b}`)
+test('分位数插值、缩放 MAD 和 robust Z 对照手算', () => {
+  assert.equal(typeof stats.quantile, 'function')
+  assert.equal(stats.quantile([8, 2, 4, 6], .25), 3.5)
+  close(stats.mad([1, 2, 3, 4, 100]), 1.4826)
+  close(stats.robustZ(6, [1, 2, 3, 4, 100]), 3 / 1.4826)
+  assert.equal(stats.robustZ(2, [2, 2]), 0)
+  assert.equal(stats.robustZ(3, [2, 2]), null)
+  assert.equal(stats.quantile([], .5), null)
+  assert.equal(stats.mad([]), null)
+  assert.equal(stats.robustZ(2, []), null)
+})
+test('Mann–Whitney 处理手算无交叠样本、并列和样本不足', () => {
+  assert.equal(typeof stats.mannWhitney, 'function')
+  const r = stats.mannWhitney([1,2,3,4,5,6,7,8], [9,10,11,12,13,14,15,16])
+  assert.equal(r.n1, 8); assert.equal(r.n2, 8)
+  // U=0, mean=32, variance=64*17/12；连续性修正后双尾 p≈0.0009391。
+  assert.ok(Math.abs(r.p - .0009391) < .000001)
+  assert.equal(stats.mannWhitney(Array(8).fill(1), Array(8).fill(1)).p, 1)
+  assert.equal(stats.mannWhitney([1], [2]), null)
+  const same = stats.mannWhitney([1,2,3,4,5,6,7,8], [1,2,3,4,5,6,7,8])
+  assert.equal(same.p, 1)
+})
+test('基尼、无数据、短基线预测和闰月剩余天数', () => {
+  assert.equal(typeof stats.forecastMonth, 'function')
+  close(stats.gini([0, 0, 10]), 2 / 3)
+  assert.equal(stats.gini([]), 0)
+  assert.equal(stats.gini([0, 0]), 0)
+  const f = stats.forecastMonth([{ day: '2024-02-27', c: 2 }, { day: '2024-02-28', c: 4 }], '2024-02-28', 14)
+  assert.equal(f.spent, 6); assert.equal(f.rem, 1); assert.equal(f.mean, 3); assert.equal(f.est, 9)
+  assert.deepEqual(stats.forecastMonth([], '2024-02-28', 14), { spent: 0, rem: 1, mean: 0, sd: 0, est: 0, lo: 0, hi: 0 })
+})
+test('连续天数和小时基线只用已有日历日，空基线保持 null', () => {
+  assert.equal(typeof stats.streaks, 'function')
+  assert.deepEqual(stats.streaks(['2026-11-02','2026-11-03','2026-11-05'], '2026-11-06'), { streak: 1, longest: 2 })
+  assert.deepEqual(stats.streaks([], '2026-11-06'), { streak: 0, longest: 0 })
+})

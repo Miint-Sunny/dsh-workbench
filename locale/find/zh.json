@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "会话里查找",
+    "description": "按 ⌘F（Windows 为 Ctrl+F）在当前会话中查找文字并高亮全部匹配，按回车跳到下一处。"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Balances and quotas",
+    "description": "Queries providers for balances and quotas: DeepSeek's API balance, plus quota windows of OpenCode Go and GLM Coding Plan. Queries only on request with short-lived caching; API keys stay host-side."
+  }
+}

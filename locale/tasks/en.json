@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Task list and wrap-up box",
+    "description": "Expands the task list above the composer while a turn runs; shows the model's summary and next-step buttons when the turn ends. Adds the wrap_up tool for the model."
+  }
+}

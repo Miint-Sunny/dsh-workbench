@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "项目记忆",
+    "description": "用 memory_view、memory_write 读取和整理同项目已验证的事实；Git 工作树共享，记忆通过工具结果进入会话。"
+  }
+}

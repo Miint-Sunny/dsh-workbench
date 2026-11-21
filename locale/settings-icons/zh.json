@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "设置页图标",
+    "description": "为养鱼（dsh-bili-whale）和订阅（dsh-plugin-subscriptions）的设置页补上图标，换掉默认的齿轮；这两个插件自己提供图标时，使用它们的。"
+  }
+}

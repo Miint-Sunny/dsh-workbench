@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Page publishing",
+    "description": "Publishes an HTML file from the workspace as a versioned page you can view in the right sidebar and in the \"Pages\" panel of the sidebar. Adds the publish_page tool for the model."
+  }
+}

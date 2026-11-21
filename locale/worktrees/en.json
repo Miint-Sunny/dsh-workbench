@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Manage worktrees",
+    "description": "Create, enter, restore and check worktrees. Cleanup moves them to the Trash and keeps their branches."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Browser viewport size",
+    "description": "Adds a Viewport size button to the right-sidebar browser toolbar: Phone, Tablet, Desktop or a custom size. The page is laid out at that size and scaled into the tab; each tab keeps its own size. Turning the row off restores the official toolbar."
+  }
+}

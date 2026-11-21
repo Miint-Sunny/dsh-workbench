@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Local review",
+    "description": "Review Git changes in an independent read-only session; findings appear under the diff lines in Review, and each fix request is previewed before sending."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Regenerate and edit-and-resend",
+    "description": "Adds \"Regenerate\" and \"Edit message\" under a reply: forks a new session from just before this message and resends there. The original session stays as it is."
+  }
+}

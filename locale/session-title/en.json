@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Session titles",
+    "description": "Automatic naming looks at the first message only. /retitle or Regenerate title in the sidebar session menu names the session again from the first and latest messages. Turn it off to restore DSH's built-in first-message titles."
+  }
+}

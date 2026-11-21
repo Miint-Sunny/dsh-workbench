@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Project memory",
+    "description": "Reads and consolidates verified facts for one project with memory_view and memory_write. Git worktrees share memory, and it reaches the session through tool results."
+  }
+}

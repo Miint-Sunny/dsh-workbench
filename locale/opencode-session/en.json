@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "OpenCode session ID",
+    "description": "Adds the session ID header that OpenCode requires to requests for the OpenCode and OpenCode Go models that Model settings adds outside the catalog; when it is off, OpenCode rejects those requests. It can stay on when only Model settings is turned off."
+  }
+}

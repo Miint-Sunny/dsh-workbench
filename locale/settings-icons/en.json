@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Settings page icons",
+    "description": "Adds icons for the settings pages of dsh-bili-whale and dsh-plugin-subscriptions in place of the default gear. When those plugins provide their own icons, theirs are used."
+  }
+}

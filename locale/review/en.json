@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Change review",
+    "description": "The Review tab in the right sidebar: unstaged, staged, uncommitted, branch and per-turn changes; stage, roll back, commit and push, and send line comments to the model. Replaces the \"Changes in turn N\" page; turn it off to restore the built-in read-only page."
+  }
+}

@@ -1,0 +1,1396 @@
+{
+ "source": "@earendil-works/pi-ai 1.3.0 getBuiltinModels(), DSH 0.2.2-rc.2 app.asar, 2026-11-13（header values replaced by <value>）",
+ "opencode-go": [
+  {
+   "id": "claude-haiku-5-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference/go",
+   "compat": {
+    "forceAdaptiveThinking": true,
+    "supportsTemperature": false
+   }
+  },
+  {
+   "id": "minimax-m3",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference/go"
+  },
+  {
+   "id": "qwen3.7-plus",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference/go"
+  },
+  {
+   "id": "qwen3.8-flash",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference/go",
+   "compat": {
+    "allowEmptySignature": true
+   }
+  },
+  {
+   "id": "qwen3.8-max",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference/go"
+  },
+  {
+   "id": "gemini-4-argon-contributor",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/go/v1"
+  },
+  {
+   "id": "cat-jam-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "deepseek-v4-pro",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "requiresReasoningContentOnAssistantMessages": true,
+    "thinkingFormat": "deepseek"
+   }
+  },
+  {
+   "id": "deepseek-v4.1-flash",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "requiresReasoningContentOnAssistantMessages": true,
+    "thinkingFormat": "deepseek"
+   }
+  },
+  {
+   "id": "glm-5.2",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "glm-5.3",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "glm-5.3-flash",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "hy3",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "hy4-preview",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "kimi-k2.7-code",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "kimi-k3",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "supportsMidConvoSystemMessages": true,
+    "supportsMidConvoToolAdditions": true
+   }
+  },
+  {
+   "id": "longcat-2.0",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "longcat-2.5-preview-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "mimo-v2.5",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "mimo-v2.5-pro",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "mimo-v2.6-flash",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "mimo-v2.6-pro",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "space-bunny",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "step-5-preview-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "gpt-5.6-luna",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-6-luna",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "grok-4.7",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  },
+  {
+   "id": "muse-spark-1.2-contributor",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  },
+  {
+   "id": "muse-spark-1.3-contributor",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/go/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  }
+ ],
+ "opencode": [
+  {
+   "id": "claude-fable-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "claude-fable-5-1",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "claude-haiku-4-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference"
+  },
+  {
+   "id": "claude-haiku-5-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true,
+    "supportsTemperature": false
+   }
+  },
+  {
+   "id": "claude-opus-4-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference"
+  },
+  {
+   "id": "claude-opus-4-6",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "claude-opus-4-7",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "forceAdaptiveThinking": true,
+    "supportsTemperature": false
+   }
+  },
+  {
+   "id": "claude-opus-4-8",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true,
+    "supportsTemperature": false
+   }
+  },
+  {
+   "id": "claude-opus-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true,
+    "supportsTemperature": false
+   }
+  },
+  {
+   "id": "claude-opus-5-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true,
+    "supportsTemperature": false
+   }
+  },
+  {
+   "id": "claude-sonnet-4",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference"
+  },
+  {
+   "id": "claude-sonnet-4-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference"
+  },
+  {
+   "id": "claude-sonnet-4-6",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "claude-sonnet-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "claude-sonnet-5-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true,
+    "supportsTemperature": false
+   }
+  },
+  {
+   "id": "qwen3.5-plus",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference"
+  },
+  {
+   "id": "qwen3.6-plus",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference"
+  },
+  {
+   "id": "qwen3.8-flash",
+   "api": "anthropic-messages",
+   "baseUrl": "https://opencode.ai/inference",
+   "compat": {
+    "allowEmptySignature": true
+   }
+  },
+  {
+   "id": "gemini-3-flash",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "gemini-3.1-pro",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "gemini-3.5-flash",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "gemini-3.5-flash-lite",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "gemini-3.6-flash",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "gemini-3.7-flash",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "gemini-3.8-flash",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "gemini-4-argon",
+   "api": "google-generative-ai",
+   "baseUrl": "https://opencode.ai/inference/v1"
+  },
+  {
+   "id": "big-pickle",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "cat-jam-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "deepseek-v4-flash",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "supportsLongCacheRetention": false,
+    "requiresReasoningContentOnAssistantMessages": true
+   }
+  },
+  {
+   "id": "deepseek-v4-flash-vision-exp",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "requiresReasoningContentOnAssistantMessages": true
+   }
+  },
+  {
+   "id": "deepseek-v4-pro",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "supportsLongCacheRetention": false,
+    "requiresReasoningContentOnAssistantMessages": true
+   }
+  },
+  {
+   "id": "deepseek-v4.1-flash",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "requiresReasoningContentOnAssistantMessages": true
+   }
+  },
+  {
+   "id": "deepseek-v4.1-flash-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "requiresReasoningContentOnAssistantMessages": true
+   }
+  },
+  {
+   "id": "glm-5",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "glm-5.1",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "glm-5.2",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "glm-5.3",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "glm-5.3-flash",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "kimi-k2.5",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "supportsLongCacheRetention": false
+   }
+  },
+  {
+   "id": "kimi-k2.6",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "thinkingFormat": "deepseek",
+    "supportsReasoningEffort": false,
+    "maxTokensField": "max_tokens",
+    "supportsLongCacheRetention": false
+   }
+  },
+  {
+   "id": "kimi-k2.7-code",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "kimi-k3",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "supportsMidConvoSystemMessages": true,
+    "supportsMidConvoToolAdditions": true
+   }
+  },
+  {
+   "id": "longcat-2.5-preview-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "mimo-v2.6-flash-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "minimax-m2.5",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "minimax-m2.7",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens",
+    "supportsLongCacheRetention": false
+   }
+  },
+  {
+   "id": "minimax-m3",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "mistral-large-4",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "nemotron-3-ultra-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "nemotron-3.5-lightning-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "nemotron-3.5-super-vl-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "qwen3.8-max",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "space-bunny-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "step-5-preview-free",
+   "api": "openai-completions",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsStrictMode": true,
+    "maxTokensField": "max_tokens"
+   }
+  },
+  {
+   "id": "gpt-5",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5-codex",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5-nano",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.1",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.1-codex",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.1-codex-max",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.1-codex-mini",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.2",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.2-codex",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.3-codex",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.4",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-5.4-mini",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-5.4-nano",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.4-pro",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-5.5",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-5.5-pro",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true
+   }
+  },
+  {
+   "id": "gpt-5.6-luna",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-5.6-sol",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-5.6-terra",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-6-astra",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-6-luna",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-6-sol",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "gpt-6.1-sol",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsOpenAIGrammarTools": true,
+    "supportsMidConvoSystemMessages": true,
+    "supportsAdditionalTools": true
+   }
+  },
+  {
+   "id": "grok-4.5",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  },
+  {
+   "id": "grok-4.6",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  },
+  {
+   "id": "grok-4.7",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  },
+  {
+   "id": "grok-build-0.1",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession",
+    "supportsReasoningEffort": false
+   }
+  },
+  {
+   "id": "muse-spark-1.2",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  },
+  {
+   "id": "muse-spark-1.3",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  },
+  {
+   "id": "muse-spark-1.3-contributor-free",
+   "api": "openai-responses",
+   "baseUrl": "https://opencode.ai/inference/v1",
+   "compat": {
+    "sessionAffinityFormat": "openai-nosession"
+   }
+  }
+ ],
+ "openrouter": [
+  {
+   "id": "anthropic/claude-fable-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://openrouter.ai/api",
+   "compat": {
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "anthropic/claude-fable-5.1",
+   "api": "anthropic-messages",
+   "baseUrl": "https://openrouter.ai/api",
+   "compat": {
+    "supportsMidConvoEffort": true,
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "anthropic/claude-haiku-4.5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://openrouter.ai/api"
+  },
+  {
+   "id": "~anthropic/claude-fable-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "~anthropic/claude-haiku-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "~anthropic/claude-opus-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "~anthropic/claude-sonnet-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "~deepseek/deepseek-flash-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "~deepseek/deepseek-pro-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "~deepseek/deepseek-v4-flash-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "sendSessionAffinityHeaders": true,
+    "requiresReasoningContentOnAssistantMessages": true
+   }
+  },
+  {
+   "id": "~google/gemini-flash-latest",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "supportsDeveloperRole": false,
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "anthropic/claude-fable-5:batch",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "anthropic/claude-fable-5.1:batch",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "anthropic/claude-haiku-4.5:batch",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "anthropic/claude-haiku-5.5:batch",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "anthropic/claude-opus-4.1:batch",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  },
+  {
+   "id": "anthropic/claude-opus-4.5:batch",
+   "api": "openai-completions",
+   "baseUrl": "https://openrouter.ai/api/v1",
+   "compat": {
+    "thinkingFormat": "openrouter",
+    "supportsStrictMode": true,
+    "cacheControlFormat": "anthropic",
+    "sendSessionAffinityHeaders": true
+   }
+  }
+ ],
+ "cloudflare-ai-gateway": [
+  {
+   "id": "claude-fable-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/anthropic",
+   "compat": {
+    "sendSessionAffinityHeaders": true,
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "claude-fable-5-1",
+   "api": "anthropic-messages",
+   "baseUrl": "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/anthropic",
+   "compat": {
+    "sendSessionAffinityHeaders": true,
+    "forceAdaptiveThinking": true
+   }
+  },
+  {
+   "id": "workers-ai/@cf/deepseek-ai/deepseek-v4-flash-0731",
+   "api": "openai-completions",
+   "baseUrl": "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/compat",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsReasoningEffort": false,
+    "maxTokensField": "max_tokens",
+    "supportsLongCacheRetention": false,
+    "sendSessionAffinityHeaders": true,
+    "requiresReasoningContentOnAssistantMessages": true,
+    "thinkingFormat": "deepseek"
+   }
+  },
+  {
+   "id": "workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813",
+   "api": "openai-completions",
+   "baseUrl": "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/compat",
+   "compat": {
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsReasoningEffort": false,
+    "maxTokensField": "max_tokens",
+    "supportsLongCacheRetention": false,
+    "sendSessionAffinityHeaders": true,
+    "requiresReasoningContentOnAssistantMessages": true,
+    "thinkingFormat": "deepseek"
+   }
+  },
+  {
+   "id": "gpt-4.1",
+   "api": "openai-responses",
+   "baseUrl": "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/openai",
+   "compat": {
+    "supportsStrictMode": true
+   }
+  },
+  {
+   "id": "gpt-4.1-mini",
+   "api": "openai-responses",
+   "baseUrl": "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/openai",
+   "compat": {
+    "supportsStrictMode": true
+   }
+  }
+ ],
+ "azure": [
+  {
+   "id": "gpt-4",
+   "api": "azure-openai-responses",
+   "baseUrl": ""
+  },
+  {
+   "id": "deepseek-v4-pro",
+   "api": "openai-completions",
+   "baseUrl": "",
+   "compat": {
+    "supportsStrictMode": true,
+    "requiresReasoningContentOnAssistantMessages": true,
+    "thinkingFormat": "openai",
+    "supportsDeveloperRole": false,
+    "supportsMidConvoSystemMessages": true,
+    "supportsLongCacheRetention": false
+   }
+  }
+ ],
+ "github-copilot": [
+  {
+   "id": "claude-fable-5",
+   "api": "anthropic-messages",
+   "baseUrl": "https://api.individual.githubcopilot.com",
+   "compat": {
+    "supportsMidConvoSystemMessages": true,
+    "forceAdaptiveThinking": true
+   },
+   "headers": {
+    "User-Agent": "<value>",
+    "Editor-Version": "<value>",
+    "Editor-Plugin-Version": "<value>",
+    "Copilot-Integration-Id": "<value>"
+   }
+  },
+  {
+   "id": "gemini-3.5-flash",
+   "api": "openai-completions",
+   "baseUrl": "https://api.individual.githubcopilot.com",
+   "compat": {
+    "supportsStrictMode": true,
+    "supportsStore": false,
+    "supportsDeveloperRole": false,
+    "supportsReasoningEffort": false
+   },
+   "headers": {
+    "User-Agent": "<value>",
+    "Editor-Version": "<value>",
+    "Editor-Plugin-Version": "<value>",
+    "Copilot-Integration-Id": "<value>"
+   }
+  },
+  {
+   "id": "gpt-5-mini",
+   "api": "openai-responses",
+   "baseUrl": "https://api.individual.githubcopilot.com",
+   "compat": {
+    "supportsOpenAIGrammarTools": true
+   },
+   "headers": {
+    "User-Agent": "<value>",
+    "Editor-Version": "<value>",
+    "Editor-Plugin-Version": "<value>",
+    "Copilot-Integration-Id": "<value>"
+   }
+  }
+ ]
+}

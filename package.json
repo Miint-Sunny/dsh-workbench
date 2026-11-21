@@ -1,0 +1,315 @@
+{
+  "name": "@miint-sunny/dsh-workbench",
+  "version": "0.2.0",
+  "description": "DSH 桌面端的工作台插件：改动审阅、任务清单和收尾框、系统通知、模型设置、会话标题等桌面端常用功能。一个组合包，每项功能一行，可单独开关；关闭某一行后，恢复被其替换的 DSH 自带界面。",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./tasks": {
+      "default": "./lib/tasks.js"
+    },
+    "./notify": {
+      "default": "./lib/notify.js"
+    },
+    "./review": {
+      "default": "./lib/review/index.js"
+    },
+    "./split": {
+      "default": "./lib/split.js"
+    },
+    "./rerun": {
+      "default": "./lib/rerun.js"
+    },
+    "./reply": {
+      "default": "./lib/reply.js"
+    },
+    "./plan": {
+      "default": "./lib/plan.js"
+    },
+    "./pages": {
+      "default": "./lib/pages.js"
+    },
+    "./find": {
+      "default": "./lib/find.js"
+    },
+    "./organize": {
+      "default": "./lib/organize.js"
+    },
+    "./checkpoints": {
+      "default": "./lib/checkpoints.js"
+    },
+    "./quota": {
+      "default": "./lib/quota.js"
+    },
+    "./locale/en.json": "./locale/en.json",
+    "./locale/zh.json": "./locale/zh.json",
+    "./tasks/locale/en.json": "./locale/tasks/en.json",
+    "./tasks/locale/zh.json": "./locale/tasks/zh.json",
+    "./notify/locale/en.json": "./locale/notify/en.json",
+    "./notify/locale/zh.json": "./locale/notify/zh.json",
+    "./review/locale/en.json": "./locale/review/en.json",
+    "./review/locale/zh.json": "./locale/review/zh.json",
+    "./split/locale/en.json": "./locale/split/en.json",
+    "./split/locale/zh.json": "./locale/split/zh.json",
+    "./rerun/locale/en.json": "./locale/rerun/en.json",
+    "./rerun/locale/zh.json": "./locale/rerun/zh.json",
+    "./reply/locale/en.json": "./locale/reply/en.json",
+    "./reply/locale/zh.json": "./locale/reply/zh.json",
+    "./plan/locale/en.json": "./locale/plan/en.json",
+    "./plan/locale/zh.json": "./locale/plan/zh.json",
+    "./pages/locale/en.json": "./locale/pages/en.json",
+    "./pages/locale/zh.json": "./locale/pages/zh.json",
+    "./find/locale/en.json": "./locale/find/en.json",
+    "./find/locale/zh.json": "./locale/find/zh.json",
+    "./organize/locale/en.json": "./locale/organize/en.json",
+    "./organize/locale/zh.json": "./locale/organize/zh.json",
+    "./checkpoints/locale/en.json": "./locale/checkpoints/en.json",
+    "./checkpoints/locale/zh.json": "./locale/checkpoints/zh.json",
+    "./quota/locale/en.json": "./locale/quota/en.json",
+    "./quota/locale/zh.json": "./locale/quota/zh.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json",
+    "./usage": {
+      "default": "./lib/usage.js"
+    },
+    "./usage/locale/zh.json": "./locale/usage/zh.json",
+    "./usage/locale/en.json": "./locale/usage/en.json",
+    "./keep-awake": {
+      "default": "./lib/keep-awake.js"
+    },
+    "./keep-awake/locale/zh.json": "./locale/keep-awake/zh.json",
+    "./keep-awake/locale/en.json": "./locale/keep-awake/en.json",
+    "./memory": {
+      "default": "./lib/memory.js"
+    },
+    "./memory/locale/zh.json": "./locale/memory/zh.json",
+    "./memory/locale/en.json": "./locale/memory/en.json",
+    "./context": {
+      "default": "./lib/context.js"
+    },
+    "./compaction": {
+      "default": "./lib/compaction.js"
+    },
+    "./context/locale/zh.json": "./locale/context/zh.json",
+    "./context/locale/en.json": "./locale/context/en.json",
+    "./compaction/locale/zh.json": "./locale/compaction/zh.json",
+    "./compaction/locale/en.json": "./locale/compaction/en.json",
+    "./local-review": {
+      "default": "./lib/local-review.js"
+    },
+    "./local-review/locale/zh.json": "./locale/local-review/zh.json",
+    "./local-review/locale/en.json": "./locale/local-review/en.json",
+    "./design": {
+      "default": "./lib/design.js"
+    },
+    "./design/locale/zh.json": "./locale/design/zh.json",
+    "./design/locale/en.json": "./locale/design/en.json",
+    "./mcp": {
+      "default": "./lib/mcp.js"
+    },
+    "./mcp/locale/zh.json": "./locale/mcp/zh.json",
+    "./mcp/locale/en.json": "./locale/mcp/en.json",
+    "./approval-rules": {
+      "default": "./lib/approval-rules.js"
+    },
+    "./approval-rules/locale/zh.json": "./locale/approval-rules/zh.json",
+    "./approval-rules/locale/en.json": "./locale/approval-rules/en.json",
+    "./command-palette": {
+      "default": "./lib/command-palette.js"
+    },
+    "./command-palette/locale/zh.json": "./locale/command-palette/zh.json",
+    "./command-palette/locale/en.json": "./locale/command-palette/en.json",
+    "./attention": {
+      "default": "./lib/attention.js"
+    },
+    "./attention/locale/zh.json": "./locale/attention/zh.json",
+    "./attention/locale/en.json": "./locale/attention/en.json",
+    "./lsp": {
+      "default": "./lib/lsp.js"
+    },
+    "./presets": {
+      "default": "./lib/presets.js"
+    },
+    "./lsp/locale/zh.json": "./locale/lsp/zh.json",
+    "./lsp/locale/en.json": "./locale/lsp/en.json",
+    "./worktrees": {
+      "default": "./lib/worktrees.js"
+    },
+    "./worktrees/locale/zh.json": "./locale/worktrees/zh.json",
+    "./worktrees/locale/en.json": "./locale/worktrees/en.json",
+    "./new-tab": {
+      "default": "./lib/new-tab.js"
+    },
+    "./new-tab/locale/zh.json": "./locale/new-tab/zh.json",
+    "./new-tab/locale/en.json": "./locale/new-tab/en.json",
+    "./turn-nav": {
+      "default": "./lib/turn-nav.js"
+    },
+    "./turn-nav/locale/zh.json": "./locale/turn-nav/zh.json",
+    "./turn-nav/locale/en.json": "./locale/turn-nav/en.json",
+    "./session-header": {
+      "default": "./lib/session-header.js"
+    },
+    "./session-header/locale/en.json": "./locale/session-header/en.json",
+    "./session-header/locale/zh.json": "./locale/session-header/zh.json",
+    "./browser-viewport": {
+      "default": "./lib/browser-viewport.js"
+    },
+    "./browser-viewport/locale/en.json": "./locale/browser-viewport/en.json",
+    "./browser-viewport/locale/zh.json": "./locale/browser-viewport/zh.json",
+    "./git-commands": {
+      "default": "./lib/git-commands.js"
+    },
+    "./tool-discovery": {
+      "default": "./lib/tool-discovery.js"
+    },
+    "./bundle-guard": {
+      "default": "./lib/bundle-guard.js"
+    },
+    "./workspace-trust": {
+      "default": "./lib/workspace-trust.js"
+    },
+    "./workspace-trust/locale/zh.json": "./locale/workspace-trust/zh.json",
+    "./workspace-trust/locale/en.json": "./locale/workspace-trust/en.json",
+    "./presets/locale/zh.json": "./locale/presets/zh.json",
+    "./presets/locale/en.json": "./locale/presets/en.json",
+    "./preset-switch": {
+      "default": "./lib/preset-switch.js"
+    },
+    "./preset-switch/locale/zh.json": "./locale/preset-switch/zh.json",
+    "./preset-switch/locale/en.json": "./locale/preset-switch/en.json",
+    "./preset-mcp": {
+      "default": "./lib/preset-mcp.js"
+    },
+    "./settings-icons": {
+      "default": "./lib/settings-icons.js"
+    },
+    "./settings-icons/locale/zh.json": "./locale/settings-icons/zh.json",
+    "./settings-icons/locale/en.json": "./locale/settings-icons/en.json",
+    "./workspace-folders": {
+      "default": "./lib/workspace-folders.js"
+    },
+    "./workspace-folders/locale/zh.json": "./locale/workspace-folders/zh.json",
+    "./workspace-folders/locale/en.json": "./locale/workspace-folders/en.json",
+    "./session-cards": {
+      "default": "./lib/session-cards.js"
+    },
+    "./session-cards/locale/zh.json": "./locale/session-cards/zh.json",
+    "./session-cards/locale/en.json": "./locale/session-cards/en.json",
+    "./workspace-guard": {
+      "default": "./lib/workspace-guard.js"
+    },
+    "./workspace-guard/locale/zh.json": "./locale/workspace-guard/zh.json",
+    "./workspace-guard/locale/en.json": "./locale/workspace-guard/en.json",
+    "./model-settings": {
+      "default": "./lib/model-settings/index.js"
+    },
+    "./model-settings/locale/zh.json": "./locale/model-settings/zh.json",
+    "./model-settings/locale/en.json": "./locale/model-settings/en.json",
+    "./opencode-session": {
+      "default": "./lib/model-settings/opencode-session.js"
+    },
+    "./opencode-session/locale/zh.json": "./locale/opencode-session/zh.json",
+    "./opencode-session/locale/en.json": "./locale/opencode-session/en.json",
+    "./session-title": {
+      "default": "./lib/session-title.js"
+    },
+    "./session-title/locale/zh.json": "./locale/session-title/zh.json",
+    "./session-title/locale/en.json": "./locale/session-title/en.json"
+  },
+  "files": [
+    "lib",
+    "locale",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE",
+    "NOTICE",
+    "docs/configuration.md",
+    "docs/configuration.en.md"
+  ],
+  "engines": {
+    "node": ">=22.19.0",
+    "dsh": ">=0.2.2-rc.2 <0.3.0-0"
+  },
+  "scripts": {
+    "build": "node scripts/build-client.mjs",
+    "prepack": "node scripts/build-client.mjs",
+    "packs": "node scripts/build-packs.mjs",
+    "test": "node scripts/build-client.mjs && node --test test/*.test.mjs",
+    "export:public": "node scripts/public-release.mjs export",
+    "public:check": "node scripts/public-release.mjs check",
+    "public:sync": "node scripts/public-release.mjs sync"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-chat",
+        "@deepseek-ai/dsh-client-ui-plugin-manager",
+        "@deepseek-ai/dsh-client-ui-commands",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-settings-models",
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-client-ui-context-menu"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.1.0",
+    "@deepseek-ai/dsh-tools": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/dsh-lsp": "*",
+    "@deepseek-ai/dsh-lsp-stdio": "*",
+    "@deepseek-ai/dsh-tool-lsp": "*",
+    "@deepseek-ai/dsh-scope": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/dsh-app-boot": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/dsh-experimental-worktree": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/dsh-session": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/dsh-llm": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/dsh-session-title": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/dsh-timeout": ">=0.2.2-rc.2 <0.3.0-0",
+    "@deepseek-ai/schemastery": "^3.18.4"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-lsp": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-lsp-stdio": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-tool-lsp": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "dsh-ui-guard": "https://github.com/Miint-Sunny/dsh-ui-guard/releases/download/v0.1.0/dsh-ui-guard-0.1.0.tgz"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Miint-Sunny/dsh-workbench.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Miint-Sunny/dsh-workbench/issues"
+  },
+  "homepage": "https://github.com/Miint-Sunny/dsh-workbench#readme"
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "OpenCode 会话 ID",
+    "description": "为「模型设置」添加的 OpenCode、OpenCode Go 目录外模型补上 OpenCode 要求的会话 ID 请求头；关闭后这些模型的请求会被拒绝。只关闭「模型设置」时，这一行可以保持开启。"
+  }
+}

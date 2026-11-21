@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "New session cards",
+    "description": "When the model thinks a task belongs in its own session, a card appears at the end of the turn. By default a session starts only when you choose Start; it starts right away when you asked for a separate session in this turn and its options stay within this session's. For a task you gave in this turn, the model may first ask whether to start it in its own session. The new session reports back to this session when it stops. Adds the propose_session tool for the model."
+  }
+}

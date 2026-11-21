@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Workspace trust",
+    "description": "When previewing HTML on desktop, reads the local styles, scripts, images, fonts, audio, video and subtitles a page references only for trusted workspaces, never dotfiles or files outside the workspace; untrusted workspaces are not read. Requires dsh-better-sidebar with the workbench patch."
+  }
+}

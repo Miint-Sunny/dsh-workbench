@@ -1,0 +1,111 @@
+# dsh-workbench：一个组合包，一样功能一行。DSH 只在有一行直接以包名挂载时才
+# 加载包的 ./client（网页部分），所以根行 dsh-workbench 的名字是包本身；关掉根行，
+# 网页部分和 /api/dsh-workbench.* 路由一起消失。
+# 各行在自己的 apply 里向根行的功能登记处报到；GET /api/dsh-workbench.features
+# 按当前开着的行回答。
+# 行 id 在整个 profile 里共用一个命名空间，所以都带 dsh-workbench 前缀：用 web、
+# tasks 这类通用 id 会顶掉官方同 id 的行（2026-11-05 桌面端实测：根行叫 web 时，
+# 官方联网服务没加载，新建会话报 tool-web「waiting for web」）。
+# 原生分组等待 bundle-guard 的许可，再挂载原有功能行。行 ID 仍可由 profile 覆盖。
+- insert:
+    - id: dsh-workbench-bundle-guard
+      name: '@miint-sunny/dsh-workbench/bundle-guard'
+      group: true
+      config: { bundle: dsh-workbench }
+    - id: dsh-workbench-bundle-status
+      name: '@miint-sunny/dsh-workbench/bundle-guard'
+      inject: [dsh-workbench.bundle-state]
+      config: { bundle: dsh-workbench, report: true }
+    - id: dsh-workbench-bundle
+      name: cordis:group
+      group: true
+      inject: [dsh-workbench.bundle-allowed]
+      config: []
+- id: dsh-workbench-bundle
+  insert:
+    - id: dsh-workbench
+      name: '@miint-sunny/dsh-workbench'
+    - id: dsh-workbench-tasks
+      name: '@miint-sunny/dsh-workbench/tasks'
+    - id: dsh-workbench-notify
+      name: '@miint-sunny/dsh-workbench/notify'
+    - id: dsh-workbench-review
+      name: '@miint-sunny/dsh-workbench/review'
+    - id: dsh-workbench-split
+      name: '@miint-sunny/dsh-workbench/split'
+    - id: dsh-workbench-rerun
+      name: '@miint-sunny/dsh-workbench/rerun'
+    - id: dsh-workbench-reply
+      name: '@miint-sunny/dsh-workbench/reply'
+    - id: dsh-workbench-plan
+      name: '@miint-sunny/dsh-workbench/plan'
+    - id: dsh-workbench-pages
+      name: '@miint-sunny/dsh-workbench/pages'
+    - id: dsh-workbench-find
+      name: '@miint-sunny/dsh-workbench/find'
+    - id: dsh-workbench-organize
+      name: '@miint-sunny/dsh-workbench/organize'
+    - id: dsh-workbench-checkpoints
+      name: '@miint-sunny/dsh-workbench/checkpoints'
+    - id: dsh-workbench-usage
+      name: '@miint-sunny/dsh-workbench/usage'
+    - id: dsh-workbench-quota
+      name: '@miint-sunny/dsh-workbench/quota'
+    - id: dsh-workbench-keep-awake
+      name: '@miint-sunny/dsh-workbench/keep-awake'
+    - id: dsh-workbench-memory
+      name: '@miint-sunny/dsh-workbench/memory'
+    - id: dsh-workbench-context
+      name: '@miint-sunny/dsh-workbench/context'
+    - id: dsh-workbench-compaction
+      name: '@miint-sunny/dsh-workbench/compaction'
+    - id: dsh-workbench-local-review
+      name: '@miint-sunny/dsh-workbench/local-review'
+    - id: dsh-workbench-design
+      name: '@miint-sunny/dsh-workbench/design'
+    - id: dsh-workbench-mcp
+      name: '@miint-sunny/dsh-workbench/mcp'
+    - id: dsh-workbench-approval-rules
+      name: '@miint-sunny/dsh-workbench/approval-rules'
+    - id: dsh-workbench-command-palette
+      name: '@miint-sunny/dsh-workbench/command-palette'
+    - id: dsh-workbench-attention
+      name: '@miint-sunny/dsh-workbench/attention'
+    - id: dsh-workbench-worktrees
+      name: '@miint-sunny/dsh-workbench/worktrees'
+    - id: dsh-workbench-new-tab
+      name: '@miint-sunny/dsh-workbench/new-tab'
+    - id: dsh-workbench-turn-nav
+      name: '@miint-sunny/dsh-workbench/turn-nav'
+    - id: dsh-workbench-session-header
+      name: '@miint-sunny/dsh-workbench/session-header'
+    - id: dsh-workbench-browser-viewport
+      name: '@miint-sunny/dsh-workbench/browser-viewport'
+    - id: dsh-workbench-git-commands
+      name: '@miint-sunny/dsh-workbench/git-commands'
+    - id: dsh-workbench-workspace-trust
+      name: '@miint-sunny/dsh-workbench/workspace-trust'
+    - id: dsh-workbench-presets
+      name: '@miint-sunny/dsh-workbench/presets'
+    - id: dsh-workbench-preset-switch
+      name: '@miint-sunny/dsh-workbench/preset-switch'
+    - id: dsh-workbench-tool-discovery
+      name: '@miint-sunny/dsh-workbench/tool-discovery'
+    - id: dsh-workbench-settings-icons
+      name: '@miint-sunny/dsh-workbench/settings-icons'
+    - id: dsh-workbench-workspace-folders
+      name: '@miint-sunny/dsh-workbench/workspace-folders'
+    - id: dsh-workbench-session-cards
+      name: '@miint-sunny/dsh-workbench/session-cards'
+    - id: dsh-workbench-workspace-guard
+      name: '@miint-sunny/dsh-workbench/workspace-guard'
+    - id: dsh-workbench-model-settings
+      name: '@miint-sunny/dsh-workbench/model-settings'
+    - id: dsh-workbench-opencode-session
+      name: '@miint-sunny/dsh-workbench/opencode-session'
+    - id: dsh-workbench-session-title
+      name: '@miint-sunny/dsh-workbench/session-title'
+# 标题服务同时只接受一个提供方。DSH 自带的首条起名（基础包里的 session-title-llm）等工作台的许可：会话标题这一行
+# （dsh-workbench-session-title）开着时收回许可，停用后交还，DSH 自带的起名随即回来。许可由守卫提供（lib/official-rows.js）。
+- id: session-title-llm
+  inject: [dsh-workbench.session-title-llm-allowed]

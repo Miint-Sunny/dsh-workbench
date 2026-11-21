@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Idle compact",
+    "description": "Compacts automatically after an idle period above a threshold, sets the compaction line per session and selects the compaction prompt. Off by default, same as the built-in behavior. Presets outside the list are not affected."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "编码 LSP",
+    "description": "只在编码预设的隔离组中启用 TypeScript 和 JavaScript 代码导航；子智能体继承。"
+  }
+}

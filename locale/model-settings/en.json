@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Model settings",
+    "description": "Replaces the Settings → Models page: providers are listed by category; an added provider opens its details page, and one not yet added opens a form. Providers and API keys stay stored in DSH. Turn it off to restore the built-in Models page."
+  }
+}

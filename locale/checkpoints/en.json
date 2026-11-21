@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Rewind to before a message",
+    "description": "Saves a workspace checkpoint before every turn and adds \"Back to before this turn\" under each reply: restore files, fork the session, or both."
+  }
+}

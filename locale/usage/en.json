@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Usage overview",
+    "description": "Calculate token usage, estimated cost, cache hits and request status from session logs."
+  }
+}

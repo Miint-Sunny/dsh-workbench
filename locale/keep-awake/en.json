@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Keep awake while working",
+    "description": "Keep macOS awake while agents or background jobs are active. Uses AC power by default; releases after one idle minute. macOS only."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Find in session",
+    "description": "Press Cmd+F (Ctrl+F on Windows) to search the current conversation, highlight every match and jump to the next one with Enter."
+  }
+}
