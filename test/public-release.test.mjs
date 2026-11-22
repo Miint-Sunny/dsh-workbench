@@ -16,7 +16,7 @@ test('公开源码带有发布页面的脚本授权回归测试', () => {
 // test/ 下不进公开仓库的文件：npm test 不跑的手动脚本，和测本机检出里才有的材料的测试。
 const localOnlyTestFiles = {
   'test/host-smoke.mjs': '手动跑的冒烟脚本，由 scripts/rehearse.sh 装进临时 DSH profile',
-  'test/memory-scope-smoke.mjs': '手动跑的冒烟脚本，装进临时 DSH profile',
+  'test/subagent-scope-smoke.mjs': '手动跑的冒烟脚本，由 scripts/rehearse.sh 装进临时 DSH profile',
   'test/review-mocks.browser.mjs': '手动跑的浏览器脚本，读 docs/mocks 的样稿，用本机 media-look 检出里的 puppeteer-core',
   'test/usage-page-shots.mjs': '手动跑的截图脚本，用本机 media-look 检出里的 puppeteer-core 和 Headless Shell',
   'test/mock-standalone.test.mjs': '测 scripts/mock-standalone.mjs 和 docs/mocks 的样稿，两者都不公开',

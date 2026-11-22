@@ -118,6 +118,7 @@
     "test/runtime-presets.test.mjs",
     "test/scoped-packages.test.mjs",
     "test/session-header-client.test.mjs",
+    "test/session-scope.test.mjs",
     "test/shortcut-defaults.test.mjs",
     "test/split-client.test.mjs",
     "test/temp-dir.test.mjs",
