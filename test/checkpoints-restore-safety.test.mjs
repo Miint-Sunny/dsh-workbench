@@ -277,7 +277,12 @@ test('恢复：做到一半失败写明已经改了哪些，撤销点留着能�
     assert.equal(response.status, 500)
     const body = await response.json()
     assert.equal(body.reason, 'failed')
-    assert.ok(body.message.includes('a.txt'), `回答里写明已经改了哪些：${body.message}`)
+    // 宿主只给原因码和数据（chore#106）：是恢复、已经改了哪些、系统的原始报错；句子由网页端按界面语言写。
+    assert.equal(body.operation, 'restore')
+    assert.deepEqual(body.changed, ['a.txt'])
+    assert.match(body.detail, /locked\/x\.txt/u)
+    assert.match(body.detail, /EACCES|permission denied/iu)
+    assert.doesNotMatch(body.detail, /中途失败|已修改|撤销点/u, '原始报错里没有宿主拼的中文')
     assert.equal(existsSync(join(scene.cwd, 'a.txt')), false, 'a.txt 已经删掉')
     assert.equal(await readFile(join(scene.cwd, 'locked', 'x.txt'), 'utf8'), 'locked file\n', '删不动的还在')
     // 撤销点保留：撤销能把 a.txt 写回来。
@@ -499,7 +504,12 @@ test('撤销：做到一半失败时答 500 failed，撤销点还在', { skip: p
     try {
       const failed = await scene.service.undo('s1')
       assert.equal(failed.status, 500)
-      assert.equal((await failed.json()).reason, 'failed')
+      const body = await failed.json()
+      assert.equal(body.reason, 'failed')
+      // 写回中途失败（chore#106）：是撤销、还没改动任何文件、git 的原始报错。
+      assert.equal(body.operation, 'undo')
+      assert.deepEqual(body.changed, [])
+      assert.match(body.detail, /checkout-index/u)
     } finally {
       await chmod(scene.cwd, 0o755)
     }
@@ -508,6 +518,29 @@ test('撤销：做到一半失败时答 500 failed，撤销点还在', { skip: p
     assert.notEqual(listed.undo, null, '失败时撤销点留在盘上')
   } finally {
     await chmod(scene.cwd, 0o755).catch(() => {})
+    await rm(scene.work, { recursive: true, force: true })
+  }
+})
+
+test('chore#106 预览、恢复、撤销：工作目录已不在 git 仓库中时答 409 not-in-repo，带上工作目录，一个文件都不碰', async () => {
+  const scene = await restoreScenario({})
+  try {
+    await write(join(scene.cwd, 'app.js'), 'v0\n')
+    await startTurn(scene.service, 's1', 1, scene.cwd)
+    await write(join(scene.cwd, 'app.js'), 'v1\n')
+    await startTurn(scene.service, 's1', 2, scene.cwd)
+    assert.equal((await (await scene.service.restore('s1', 1)).json()).ok, true)
+    // 仓库被删掉（.git 不在了），工作目录还在：git rev-parse 答 not a git repository。
+    await rm(join(scene.cwd, '.git'), { recursive: true, force: true })
+    for (const [name, call] of [['preview', () => scene.service.preview('s1', 1)], ['restore', () => scene.service.restore('s1', 1)], ['undo', () => scene.service.undo('s1')]]) {
+      const response = await call()
+      assert.equal(response.status, 409, name)
+      const body = await response.json()
+      assert.equal(body.reason, 'not-in-repo', name)
+      assert.equal(body.cwd, scene.cwd, name)
+    }
+    assert.equal(await readFile(join(scene.cwd, 'app.js'), 'utf8'), 'v0\n', '没有写回')
+  } finally {
     await rm(scene.work, { recursive: true, force: true })
   }
 })

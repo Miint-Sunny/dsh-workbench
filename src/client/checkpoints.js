@@ -28,7 +28,7 @@ import { settingsFormLabels } from './copy.js'
 const CHECKPOINTS_INJECT = ['sessions', 'uiWorkspace', 'uiSession', 'remote.agentPresets']
 
 /** 本功能的中文界面文字；键以 `checkpoints.` 开头，原话照第四批样稿。 */
-const CHECKPOINTS_ZH = {
+export const CHECKPOINTS_ZH = {
   'checkpoints.action': '回到这一轮开始前',
   'checkpoints.reason.running': '会话进行中，结束后才能回到这一轮开始前',
   'checkpoints.reason.noCheckpoint': '此轮没有检查点',
@@ -40,7 +40,10 @@ const CHECKPOINTS_ZH = {
   'checkpoints.reason.disconnected': '和 DSH 的连接已断开',
   'checkpoints.reason.loading': '正在读取检查点…',
   'checkpoints.reason.noUndo': '没有可撤销的恢复',
-  'checkpoints.reason.unavailable': '检查点暂不可用：{message}',
+  'checkpoints.reason.unavailable': '检查点暂不可用：{reason}',
+  'checkpoints.reason.notInRepo': '工作目录 {cwd} 已不在 git 仓库中',
+  'checkpoints.reason.badRequest': '请求无效',
+  'checkpoints.reason.badRequestDetail': '请求无效：{detail}',
   'checkpoints.subtitle': '第 {turn} 轮 · {question}',
   'checkpoints.subtitleTurn': '第 {turn} 轮',
   'checkpoints.option.files': '只恢复文件',
@@ -101,7 +104,13 @@ const CHECKPOINTS_ZH = {
   'checkpoints.error.undoPartial': '撤销未完成：已撤销 {n} 个文件，{skipped} 项未撤销。请排除下方列出的原因后重试。',
   'checkpoints.error.undoBlocked': '未撤销：{skipped} 项无法撤销。请排除下方列出的原因后重试。',
   'checkpoints.error.fork': '分叉失败：{reason}。',
+  'checkpoints.error.preview': '无法计算将变更的文件：{reason}',
+  'checkpoints.error.restoreInterrupted': '恢复中途失败：{detail}。',
+  'checkpoints.error.restoreInterruptedModified': '恢复中途失败：{detail}。已修改：{paths}。',
+  'checkpoints.error.undoInterrupted': '撤销中途失败：{detail}。',
+  'checkpoints.error.undoInterruptedModified': '撤销中途失败：{detail}。已修改：{paths}。',
   'checkpoints.error.untouched': '文件没有改动。',
+  'checkpoints.listSeparator': '、',
   'checkpoints.notice.forked': '已从第 {turn} 轮之前分叉，原会话保留。',
   'checkpoints.notice.restoredForked': '已恢复 {n} 个文件，并从第 {turn} 轮之前分叉，原会话保留。',
   'checkpoints.notice.partialForked': '已恢复 {n} 个文件（{skipped} 项没有恢复），并从第 {turn} 轮之前分叉，原会话保留。',
@@ -119,7 +128,7 @@ const CHECKPOINTS_ZH = {
 }
 
 /** 本功能的英文界面文字，键和 CHECKPOINTS_ZH 一一对应。 */
-const CHECKPOINTS_EN = {
+export const CHECKPOINTS_EN = {
   'checkpoints.action': 'Back to before this turn',
   'checkpoints.reason.running': 'The session is running. You can go back to before this turn after it finishes',
   'checkpoints.reason.noCheckpoint': 'This turn has no checkpoint',
@@ -131,7 +140,10 @@ const CHECKPOINTS_EN = {
   'checkpoints.reason.disconnected': 'The connection to DSH is down',
   'checkpoints.reason.loading': 'Reading checkpoints…',
   'checkpoints.reason.noUndo': 'There is no restore to undo',
-  'checkpoints.reason.unavailable': 'Checkpoints are unavailable: {message}',
+  'checkpoints.reason.unavailable': 'Checkpoints are unavailable: {reason}',
+  'checkpoints.reason.notInRepo': 'The working directory {cwd} is no longer in a git repository',
+  'checkpoints.reason.badRequest': 'The request is invalid',
+  'checkpoints.reason.badRequestDetail': 'The request is invalid: {detail}',
   'checkpoints.subtitle': 'Turn {turn} · {question}',
   'checkpoints.subtitleTurn': 'Turn {turn}',
   'checkpoints.option.files': 'Restore files only',
@@ -192,7 +204,13 @@ const CHECKPOINTS_EN = {
   'checkpoints.error.undoPartial': 'Undo is incomplete: {n} files were undone; {skipped} items were not. Resolve the causes listed below and retry.',
   'checkpoints.error.undoBlocked': 'Not undone: {skipped} items could not be undone. Resolve the causes listed below and retry.',
   'checkpoints.error.fork': 'Fork failed: {reason}.',
+  'checkpoints.error.preview': 'Could not calculate the files to change: {reason}',
+  'checkpoints.error.restoreInterrupted': 'Restore failed partway through: {detail}.',
+  'checkpoints.error.restoreInterruptedModified': 'Restore failed partway through: {detail}. Modified: {paths}.',
+  'checkpoints.error.undoInterrupted': 'Undo failed partway through: {detail}.',
+  'checkpoints.error.undoInterruptedModified': 'Undo failed partway through: {detail}. Modified: {paths}.',
   'checkpoints.error.untouched': 'No files were changed.',
+  'checkpoints.listSeparator': ', ',
   'checkpoints.notice.forked': 'Forked from before turn {turn}. The original session is kept.',
   'checkpoints.notice.restoredForked': 'Restored {n} files and forked from before turn {turn}. The original session is kept.',
   'checkpoints.notice.partialForked': 'Restored {n} files ({skipped} items not restored) and forked from before turn {turn}. The original session is kept.',
@@ -334,17 +352,17 @@ export function checkpointAvailability({ entries, eligible, full, running, turn,
 
 /**
  * 入口按钮的状态：数据层这个会话的快照加上这一轮的坐标。还没读到 list 时是 'loading'，
- * 读失败而且没有上一份时是失败原因（断线是 'disconnected'，别的是 'unavailable' 带宿主的话）；
- * 读到了交给 checkpointAvailability（之后再读失败也照旧用上一份）。纯函数。
- * @param {{value?: object, error?: {reason: string, message: string}, expired?: ReadonlySet<number>} | undefined} listState createCheckpointsApi 的 peek 结果。
+ * 读失败而且没有上一份时是失败原因（断线是 'disconnected'，别的是 'unavailable'；cause 是数据层
+ * 记下的那次失败，提示里写它的原因）；读到了交给 checkpointAvailability（之后再读失败也照旧用上一份）。纯函数。
+ * @param {{value?: object, error?: {reason: string, message: string, detail?: string}, expired?: ReadonlySet<number>} | undefined} listState createCheckpointsApi 的 peek 结果。
  * @param {{turn: number, seq?: number, running: boolean}} target 这一轮的坐标和会话是否在运行。
- * @returns {{ok: true, entry: object} | {ok: false, reason: string, message?: string}} 结果。
+ * @returns {{ok: true, entry: object} | {ok: false, reason: string, cause?: object}} 结果。
  */
 export function checkpointsEntryView(listState, { turn, seq, running }) {
   if (listState?.value === undefined) {
     if (listState?.error === undefined) return { ok: false, reason: 'loading' }
-    const { reason, message } = listState.error
-    return reason === 'disconnected' ? { ok: false, reason, message } : { ok: false, reason: 'unavailable', message }
+    const cause = listState.error
+    return { ok: false, reason: cause.reason === 'disconnected' ? 'disconnected' : 'unavailable', cause }
   }
   return checkpointAvailability({ ...listState.value, running, turn, seq, expired: listState.expired })
 }
@@ -364,23 +382,50 @@ const CHECKPOINTS_REASON_KEYS = {
 }
 
 /** 宿主在改文件之前就拒绝的原因：这几种失败时「文件没有改动」一定成立。 */
-const CHECKPOINTS_UNTOUCHED_REASONS = new Set(['running', 'busy', 'expired', 'no-checkpoint', 'not-eligible', 'git-unavailable', 'bad-request', 'undo-stale'])
+const CHECKPOINTS_UNTOUCHED_REASONS = new Set(['running', 'busy', 'expired', 'no-checkpoint', 'not-eligible', 'git-unavailable', 'not-in-repo', 'bad-request', 'undo-stale'])
 
 /** 重试也没用的原因（检查点不在了、不存在）：弹窗里不给「重试」。 */
 const CHECKPOINTS_FINAL_REASONS = new Set(['expired', 'no-checkpoint', 'not-eligible', 'undo-stale'])
 
+/** 失败里的原始报错（detail）：去掉首尾空白和末尾的句号，句子由词条收尾；没有时空串。 */
+function checkpointsDetailOf(failure) {
+  return String(failure?.detail ?? '').trim().replace(/[。.]+$/u, '')
+}
+
 /**
- * 一个失败原因怎么写：认识的 reason 用本功能的词条，'unavailable' 带上宿主的话，其余显示
- * 宿主给的 message（去掉末尾的句号，句子由词条收尾）。纯函数。
- * @param {{reason?: string, message?: string} | undefined} failure 失败（接口的 { reason, message }，或入口的 'loading'、'unavailable'）。
- * @returns {{key: string, params?: Record<string, string>} | {text: string}} 词条和参数，或者直接显示的文字。
+ * 一个失败原因怎么写，句子都由本功能的中英文词条按原因码和数据写，宿主写给日志的 message 不显示。
+ * 有自己词条的原因给词条：not-in-repo 写出工作目录，bad-request 有 detail（配置校验的原文）时附在
+ * 后面，'unavailable' 写读不到检查点列表的原因（cause）。failed 和不认识的原因没有自己的词条，原样
+ * 显示 detail（git、文件系统的原始报错），没有 detail 时显示原因码；调用方把它套进所在步骤的词条
+ * （「未恢复：」「分叉失败：」）。纯函数。
+ * @param {{reason?: string, detail?: string, cwd?: string, cause?: object} | undefined} failure 失败（数据层的 { reason, message, … }，或入口的 'loading'、'disconnected'、'unavailable'）。
+ * @returns {{key: string, params?: Record<string, unknown>} | {text: string}} 词条和参数，或者直接显示的原文。
  */
 export function checkpointsReasonText(failure) {
-  const message = String(failure?.message ?? '').trim().replace(/[。.]+$/u, '')
-  const key = CHECKPOINTS_REASON_KEYS[failure?.reason]
-  if (key !== undefined) return { key }
-  if (failure?.reason === 'unavailable') return { key: 'checkpoints.reason.unavailable', params: { message } }
-  return { text: message === '' ? String(failure?.reason ?? '') : message }
+  const reason = failure?.reason
+  if (Object.hasOwn(CHECKPOINTS_REASON_KEYS, reason)) return { key: CHECKPOINTS_REASON_KEYS[reason] }
+  if (reason === 'not-in-repo') return { key: 'checkpoints.reason.notInRepo', params: { cwd: String(failure.cwd ?? '') } }
+  if (reason === 'unavailable') return { key: 'checkpoints.reason.unavailable', params: { reason: checkpointsReasonText(failure.cause) } }
+  const detail = checkpointsDetailOf(failure)
+  if (reason === 'bad-request') return detail === '' ? { key: 'checkpoints.reason.badRequest' } : { key: 'checkpoints.reason.badRequestDetail', params: { detail } }
+  return { text: detail === '' ? String(reason ?? '') : detail }
+}
+
+/**
+ * 写回做到一半失败（宿主答 failed，带 operation、changed、detail）时弹窗里的那一整行：哪一种写回
+ * 中途失败、原始报错、已经改动的文件（changed 由 checkpointsSay 按词典的分隔符拼）。不套「未恢复：」：
+ * 文件可能已经改了一部分。纯函数。
+ * @param {{reason: string, operation: 'restore' | 'undo', changed: string[], detail?: string}} failure 失败。
+ * @returns {{key: string, params: Record<string, unknown>}} 词条和参数。
+ */
+function checkpointsInterruptedLine(failure) {
+  const detail = checkpointsDetailOf(failure) || failure.reason
+  const undo = failure.operation === 'undo'
+  if (failure.changed.length === 0) return { key: undo ? 'checkpoints.error.undoInterrupted' : 'checkpoints.error.restoreInterrupted', params: { detail } }
+  return {
+    key: undo ? 'checkpoints.error.undoInterruptedModified' : 'checkpoints.error.restoreInterruptedModified',
+    params: { detail, paths: failure.changed },
+  }
 }
 
 // ---------- 纯函数：弹窗里的文字 ----------
@@ -659,15 +704,17 @@ function checkpointsCanUndo(state) {
   return phase === 'error' && (state.error?.step === 'preview' || state.error?.step === 'undo')
 }
 
-/** 失败留 reason 和 message（缺了补上）；撤销做了一部分时宿主另带 restored、skipped，也留着，弹窗列出没有撤销的项。 */
+/**
+ * 失败留 reason 和 message（缺了补上），再带上宿主给的数据字段（checkpointsFailureData）：撤销做了
+ * 一部分时的 restored、skipped（弹窗列出没有撤销的项），写回中途失败的 operation、changed，原始报错
+ * detail，工作目录 cwd。
+ */
 function checkpointsFailureOf(failure) {
-  const base = {
+  return {
     reason: typeof failure?.reason === 'string' && failure.reason !== '' ? failure.reason : 'failed',
     message: typeof failure?.message === 'string' ? failure.message : '',
+    ...checkpointsFailureData(failure),
   }
-  return Number.isSafeInteger(failure?.restored) && Array.isArray(failure?.skipped)
-    ? { ...base, restored: failure.restored, skipped: failure.skipped }
-    : base
 }
 
 /**
@@ -775,7 +822,9 @@ export function checkpointsDialogView(state, { undo, now, cwd, maxFileMB } = {})
     })
     if (option.restoresFiles) {
       if (state.phase === 'error') {
-        view.body.push({ kind: 'result', tone: 'error', text: checkpointsReasonText(state.error) })
+        // 有自己词条的原因单独成句；只有原始报错的（failed 之类）前面写「无法计算将变更的文件：」。
+        const reason = checkpointsReasonText(state.error)
+        view.body.push({ kind: 'result', tone: 'error', text: 'text' in reason ? { key: 'checkpoints.error.preview', params: { reason } } : reason })
       } else if (state.preview === undefined) {
         view.body.push({ kind: 'loading', text: { key: 'checkpoints.loading' } })
       } else {
@@ -828,6 +877,12 @@ export function checkpointsDialogView(state, { undo, now, cwd, maxFileMB } = {})
       ? { key: 'checkpoints.error.undoPartial', params: { n: String(n), skipped: String(notUndone.length) } }
       : { key: 'checkpoints.error.undoBlocked', params: { skipped: String(notUndone.length) } }
     view.body.push({ kind: 'result', tone: 'error', text }, skippedBlock(notUndone, 'undo'))
+  } else if (step !== 'fork' && state.error?.operation !== undefined) {
+    // 写回做到一半失败（宿主答 failed，带 operation、changed、detail）：整行由 checkpointsInterruptedLine 写。
+    // 改过文件的恢复写「可撤销」（结果视图里没有撤销按钮）；撤销有「重试」；一个都没改时写「文件没有改动」。
+    view.body.push({ kind: 'result', tone: 'error', text: checkpointsInterruptedLine(state.error) })
+    const note = state.error.changed.length === 0 ? 'checkpoints.error.untouched' : state.error.operation === 'restore' ? 'checkpoints.result.undoHint' : undefined
+    if (note !== undefined) view.body.push({ kind: 'note', tone: 'info', text: { key: note } })
   } else {
     const errorKey = step === 'undo' ? 'checkpoints.error.undo' : step === 'fork' ? 'checkpoints.error.fork' : 'checkpoints.error.restore'
     // 撤销时的 no-checkpoint 是「恢复前」检查点不在了（另一个窗口先撤销了），不是这一轮没有检查点。
@@ -894,9 +949,34 @@ const CHECKPOINTS_ADOPT = {
 }
 
 /**
+ * 失败回答里的数据字段（接口文档「失败的 reason」）：核过类型才留，类型不对的丢掉。detail 是原始报错，
+ * cwd 是 not-in-repo 的工作目录；operation 是 'restore' 或 'undo' 时才和 changed（只留字符串）一起留；
+ * 撤销做了一部分时的 restored、skipped 照 restore 的成功回答核。
+ * @param {unknown} source 宿主的失败回答，或数据层整理过的失败。
+ * @returns {{detail?: string, cwd?: string, operation?: 'restore' | 'undo', changed?: string[], restored?: number, skipped?: object[]}} 数据字段。
+ */
+function checkpointsFailureData(source) {
+  const data = {}
+  if (!checkpointsIsObject(source)) return data
+  if (typeof source.detail === 'string') data.detail = source.detail
+  if (typeof source.cwd === 'string') data.cwd = source.cwd
+  if ((source.operation === 'restore' || source.operation === 'undo') && Array.isArray(source.changed)) {
+    data.operation = source.operation
+    data.changed = source.changed.filter(path => typeof path === 'string')
+  }
+  const partial = CHECKPOINTS_ADOPT.restore(source)
+  if (partial !== undefined) {
+    data.restored = partial.restored
+    data.skipped = partial.skipped
+  }
+  return data
+}
+
+/**
  * 客户端的数据层：宿主是真身，这里是缓存加订阅。所有调用的失败统一成 { ok: false, reason,
- * message }（接口文档的 reason 表；fetch 抛错是 'disconnected'，回答不是接口里的样子是
- * 'failed' 带 HTTP 状态码）；撤销做了一部分时宿主的失败回答另带 restored、skipped，原样留下。list 每个会话缓存 5 秒；invalidate 作废（不清掉上一份，
+ * message } 加回答里的数据字段（checkpointsFailureData；接口文档的 reason 表）：fetch 抛错是
+ * 'disconnected'，回答不是接口里的样子是 'failed'，HTTP 状态码同时记进 message 和 detail。
+ * message 只供排查，界面上的句子由 checkpointsReasonText 写。list 每个会话缓存 5 秒；invalidate 作废（不清掉上一份，
  * 入口照旧显示），有入口挂着的会话马上重读，作废前发出的请求的回答丢掉（可能早于恢复）。
  * restore、undo 之后不论成败都作废那个会话（失败多半是另一个窗口先恢复或撤销了，undo
  * 那一行要跟着变）。preview 答 expired 时记下这一轮，入口跟着置灰。
@@ -943,18 +1023,14 @@ export function createCheckpointsApi(fetchImpl, { now = () => Date.now(), ttlMs 
     const status = `HTTP ${response.status}`
     if (checkpointsIsObject(parsed) && parsed.ok === false && typeof parsed.reason === 'string' && parsed.reason !== '') {
       const message = typeof parsed.message === 'string' && parsed.message !== '' ? parsed.message : status
-      // 撤销做了一部分：restored、skipped 和成功回答一样核过再留下。
-      const partial = CHECKPOINTS_ADOPT.restore(parsed)
-      return partial === undefined
-        ? { ok: false, reason: parsed.reason, message }
-        : { ok: false, reason: parsed.reason, message, restored: partial.restored, skipped: partial.skipped }
+      return { ok: false, reason: parsed.reason, message, ...checkpointsFailureData(parsed) }
     }
     if (checkpointsIsObject(parsed) && parsed.ok === true) {
       const name = route.split('?')[0]
       const adopted = CHECKPOINTS_ADOPT[name === 'undo' ? 'restore' : name](parsed)
       if (adopted !== undefined) return adopted
     }
-    return { ok: false, reason: 'failed', message: status }
+    return { ok: false, reason: 'failed', message: status, detail: status }
   }
 
   const list = (sessionId) => {
@@ -971,8 +1047,9 @@ export function createCheckpointsApi(fetchImpl, { now = () => Date.now(), ttlMs 
       if (result.ok) {
         const { ok, ...value } = result
         if (JSON.stringify(previous?.value) !== JSON.stringify(value) || previous?.error !== undefined) setState(sessionId, { value, error: undefined })
-      } else if (previous?.error?.reason !== result.reason || previous?.error?.message !== result.message) {
-        setState(sessionId, { error: { reason: result.reason, message: result.message } })
+      } else {
+        const error = checkpointsFailureOf(result)
+        if (JSON.stringify(previous?.error) !== JSON.stringify(error)) setState(sessionId, { error })
       }
       return result
     })
@@ -1144,7 +1221,9 @@ export async function runCheckpointsTask(task, context, deps, dispatch) {
   try {
     await checkpointsForkSession(deps.fork, { sessionId, atSeq: context.atSeq, turn, restored })
   } catch (error) {
-    dispatch({ type: 'failed', token, step: 'fork', failure: { reason: 'failed', message: checkpointsErrorMessage(error) } })
+    // DSH 分叉接口抛出的原文：弹窗原样附在「分叉失败：」后面。
+    const detail = checkpointsErrorMessage(error)
+    dispatch({ type: 'failed', token, step: 'fork', failure: { reason: 'failed', message: detail, detail } })
     return
   }
   dispatch({ type: 'succeeded', token, step: 'fork' })
@@ -1197,12 +1276,21 @@ export function checkpointsTogglePreset(presets, id) {
 
 // ---------- 界面 ----------
 
-/** 把纯函数给的 { key, params } 或 { text } 过词典（参数也可以是 { key } 或 { text }）。 */
-function checkpointsSay(t, view) {
+/**
+ * 把纯函数给的 { key, params } 或 { text } 过词典。参数可以是 { key } 或 { text }（先过词典），也可以是
+ * 字符串数组（用词典的 checkpoints.listSeparator 连起来：中文「、」，英文「, 」）。
+ * @param {(key: string, params?: Record<string, string>) => string} t 词典（DSH 的 locale.bind）。
+ * @param {{key: string, params?: Record<string, unknown>} | {text: string} | undefined} view 纯函数给的文字。
+ * @returns {string} 界面上的文字。
+ */
+export function checkpointsSay(t, view) {
   if (view === undefined) return ''
   if ('text' in view) return view.text
   const params = {}
-  for (const [name, value] of Object.entries(view.params ?? {})) params[name] = typeof value === 'object' ? checkpointsSay(t, value) : value
+  for (const [name, value] of Object.entries(view.params ?? {})) {
+    if (Array.isArray(value)) params[name] = value.join(t('checkpoints.listSeparator'))
+    else params[name] = typeof value === 'object' ? checkpointsSay(t, value) : value
+  }
   return t(view.key, params)
 }
 

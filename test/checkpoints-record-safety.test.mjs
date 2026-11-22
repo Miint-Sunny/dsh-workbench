@@ -313,7 +313,11 @@ test('记录：config 的 waitSeconds 超出 1–60 答 400，写失败答 500',
     try {
       response = await post({ keepDays: 14, maxStoreMB: 2048, skipPresets: [], waitSeconds: 5, maxFileMB: 2 })
       assert.equal(response.status, 500)
-      assert.equal((await response.json()).reason, 'failed')
+      const body = await response.json()
+      assert.equal(body.reason, 'failed')
+      // 文件系统的原始报错放进 detail，网页端附在「保存失败：」后面（chore#106）。
+      assert.match(body.detail, /EACCES|permission denied/iu)
+      assert.doesNotMatch(body.detail, /配置保存失败/u)
     } finally {
       await chmod(scene.configDir, 0o755)
     }

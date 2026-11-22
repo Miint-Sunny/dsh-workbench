@@ -6,6 +6,8 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
+  CHECKPOINTS_EN,
+  CHECKPOINTS_ZH,
   applyCheckpoints,
   checkpointAvailability,
   checkpointsConfigDraft,
@@ -18,6 +20,7 @@ import {
   checkpointsQuestionOf,
   checkpointsReasonText,
   checkpointsResultLine,
+  checkpointsSay,
   checkpointsStoppedSessions,
   checkpointsSubtitle,
   checkpointsTailTarget,
@@ -138,26 +141,35 @@ test('checkpointsEntryView：还没读到是 loading，读失败写原因，读�
   const target = { turn: 3, seq: 30, running: false }
   assert.deepEqual(checkpointsEntryView(undefined, target), { ok: false, reason: 'loading' })
   assert.deepEqual(checkpointsEntryView({ error: { reason: 'disconnected', message: 'fetch failed' } }, target),
-    { ok: false, reason: 'disconnected', message: 'fetch failed' })
-  assert.deepEqual(checkpointsEntryView({ error: { reason: 'failed', message: 'HTTP 404' } }, target),
-    { ok: false, reason: 'unavailable', message: 'HTTP 404' })
+    { ok: false, reason: 'disconnected', cause: { reason: 'disconnected', message: 'fetch failed' } })
+  assert.deepEqual(checkpointsEntryView({ error: { reason: 'failed', message: 'HTTP 404', detail: 'HTTP 404' } }, target),
+    { ok: false, reason: 'unavailable', cause: { reason: 'failed', message: 'HTTP 404', detail: 'HTTP 404' } })
   const { ok, ...value } = listBody()
   const view = checkpointsEntryView({ value, error: { reason: 'disconnected', message: 'x' }, expired: new Set() }, target)
   assert.equal(view.ok, true)
 })
 
-test('checkpointsReasonText：认识的原因用词典，其余显示宿主的话', () => {
+test('checkpointsReasonText：按原因码和数据写词条，不显示宿主的 message；没有词条的原因原样显示 detail', () => {
   assert.deepEqual(checkpointsReasonText({ reason: 'running', message: 'whatever' }), { key: 'checkpoints.reason.running' })
   assert.deepEqual(checkpointsReasonText({ reason: 'not-eligible' }), { key: 'checkpoints.reason.noCheckpoint' })
   assert.deepEqual(checkpointsReasonText({ reason: 'busy' }), { key: 'checkpoints.reason.busy' })
   assert.deepEqual(checkpointsReasonText({ reason: 'git-unavailable' }), { key: 'checkpoints.reason.gitUnavailable' })
   assert.deepEqual(checkpointsReasonText({ reason: 'expired' }), { key: 'checkpoints.reason.expired' })
   assert.deepEqual(checkpointsReasonText({ reason: 'full' }), { key: 'checkpoints.reason.full' })
-  assert.deepEqual(checkpointsReasonText({ reason: 'unavailable', message: 'HTTP 404' }), { key: 'checkpoints.reason.unavailable', params: { message: 'HTTP 404' } })
-  // bad-request、failed 和不认识的：宿主写的中文原因，句尾的句号去掉（词条自己收尾）
-  assert.deepEqual(checkpointsReasonText({ reason: 'bad-request', message: 'turn 必须是正整数。' }), { text: 'turn 必须是正整数' })
+  // not-in-repo：词条里写宿主给的工作目录
+  assert.deepEqual(checkpointsReasonText({ reason: 'not-in-repo', cwd: '/Users/me/app', message: '工作目录 /Users/me/app 已不在 git 仓库中。' }),
+    { key: 'checkpoints.reason.notInRepo', params: { cwd: '/Users/me/app' } })
+  // 读不到检查点列表：词条里写读不到的原因（这里是数据层记下的 HTTP 状态码）
+  assert.deepEqual(checkpointsReasonText({ reason: 'unavailable', cause: { reason: 'failed', message: 'HTTP 404', detail: 'HTTP 404' } }),
+    { key: 'checkpoints.reason.unavailable', params: { reason: { text: 'HTTP 404' } } })
+  // bad-request：宿主写给日志的 message 不显示；带 detail（配置校验的原文）时附在词条后面
+  assert.deepEqual(checkpointsReasonText({ reason: 'bad-request', message: '轮次号不合法。' }), { key: 'checkpoints.reason.badRequest' })
+  assert.deepEqual(checkpointsReasonText({ reason: 'bad-request', message: 'x', detail: 'checkpoints config keepDays must be a positive integer' }),
+    { key: 'checkpoints.reason.badRequestDetail', params: { detail: 'checkpoints config keepDays must be a positive integer' } })
+  // failed 和不认识的原因没有自己的词条：原样显示 detail（句尾的句号去掉，句子由词条收尾），没有 detail 时显示原因码
+  assert.deepEqual(checkpointsReasonText({ reason: 'failed', message: '处理请求时出错：EIO。', detail: 'EIO: i/o error, read.' }), { text: 'EIO: i/o error, read' })
   assert.deepEqual(checkpointsReasonText({ reason: 'failed', message: '' }), { text: 'failed' })
-  assert.deepEqual(checkpointsReasonText({ reason: 'something-new', message: '新原因' }), { text: '新原因' })
+  assert.deepEqual(checkpointsReasonText({ reason: 'something-new', message: '新原因' }), { text: 'something-new' })
 })
 
 // ---------- 弹窗里的文字 ----------
@@ -473,6 +485,15 @@ test('checkpointsDialogView：文件列表算失败——能重试的给「重�
   assert.deepEqual(buttonsOf(busy)[1], ['retry', 'checkpoints.button.retry', 'retryPreview', false])
   const expired = checkpointsDialogView(run([open, { type: 'previewFailed', token: 1, failure: { reason: 'expired', message: '' } }]), CONTEXT)
   assert.deepEqual(buttonsOf(expired)[1], ['primary', 'checkpoints.button.both', 'confirm', true])
+  // 有自己词条的原因单独成句；工作目录不在 git 仓库里时写出目录
+  const gone = checkpointsDialogView(run([open, { type: 'previewFailed', token: 1, failure: { reason: 'not-in-repo', message: '工作目录 /w 已不在 git 仓库中。', cwd: '/w' } }]), CONTEXT)
+  assert.deepEqual(gone.body, [{ kind: 'result', tone: 'error', text: { key: 'checkpoints.reason.notInRepo', params: { cwd: '/w' } } }])
+  // 没有自己词条的（failed）：「无法计算将变更的文件：」后面原样附上原始报错，不显示宿主的 message
+  const crashed = checkpointsDialogView(run([open, { type: 'previewFailed', token: 1, failure: { reason: 'failed', message: '处理请求时出错：…', detail: 'git write-tree failed: fatal: unable to write new index file' } }]), CONTEXT)
+  assert.deepEqual(crashed.body, [{
+    kind: 'result', tone: 'error',
+    text: { key: 'checkpoints.error.preview', params: { reason: { text: 'git write-tree failed: fatal: unable to write new index file' } } },
+  }])
 })
 
 test('checkpointsDialogView：只恢复文件完成（样稿 E、F）——结果、没有恢复的、撤销和完成', () => {
@@ -513,10 +534,46 @@ test('checkpointsDialogView：恢复没成（样稿 F2）——原因、「文�
   // 检查点已失效时重试也没用，只留关闭
   const expired = run([{ type: 'confirm' }, { type: 'failed', token: 1, step: 'restore', failure: { reason: 'expired', message: '' } }], readyState())
   assert.deepEqual(buttonsOf(checkpointsDialogView(expired, CONTEXT)), [['cancel', 'checkpoints.button.cancel', 'close', false]])
-  // 宿主的 500（failed）不能保证文件没动，不写那一句
-  const crashed = run([{ type: 'confirm' }, { type: 'failed', token: 1, step: 'restore', failure: { reason: 'failed', message: 'git checkout-index 失败' } }], readyState())
+  // 宿主的 500（failed）不能保证文件没动，不写那一句；原因是原样附上的原始报错，不是宿主的 message
+  const crashed = run([{ type: 'confirm' }, { type: 'failed', token: 1, step: 'restore', failure: { reason: 'failed', message: '处理请求时出错：…', detail: 'git write-tree failed: fatal: unable to write new index file' } }], readyState())
   assert.deepEqual(checkpointsDialogView(crashed, CONTEXT).body, [
-    { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.restore', params: { reason: { text: 'git checkout-index 失败' } } } },
+    { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.restore', params: { reason: { text: 'git write-tree failed: fatal: unable to write new index file' } } } },
+  ])
+  // 工作目录不在 git 仓库里：宿主在改文件之前就拒绝，写「文件没有改动」，可以重试
+  const gone = run([{ type: 'confirm' }, { type: 'failed', token: 1, step: 'restore', failure: { reason: 'not-in-repo', message: 'x', cwd: '/w' } }], readyState())
+  const goneView = checkpointsDialogView(gone, CONTEXT)
+  assert.deepEqual(goneView.body, [
+    { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.restore', params: { reason: { key: 'checkpoints.reason.notInRepo', params: { cwd: '/w' } } } } },
+    { kind: 'note', tone: 'info', text: { key: 'checkpoints.error.untouched' } },
+  ])
+  assert.deepEqual(buttonsOf(goneView), [['cancel', 'checkpoints.button.cancel', 'close', false], ['retry', 'checkpoints.button.retry', 'confirm', false]])
+})
+
+test('chore#106 写回中途失败：整行写「恢复（撤销）中途失败」和改过的文件，不套「未恢复：」；没改动时写「文件没有改动」', () => {
+  const detail = 'EACCES: permission denied, unlink \'/w/locked/x.txt\''
+  const viewOf = (step, changed) => checkpointsDialogView(run([
+    { type: step === 'undo' ? 'undo' : 'confirm' },
+    { type: 'failed', token: 1, step, failure: { reason: 'failed', message: '宿主写给日志的句子', operation: step, changed, detail } },
+  ], readyState()), CONTEXT)
+  const restored = viewOf('restore', ['a.txt', 'src/b.txt'])
+  assert.deepEqual(restored.body, [
+    { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.restoreInterruptedModified', params: { detail, paths: ['a.txt', 'src/b.txt'] } } },
+    { kind: 'note', tone: 'info', text: { key: 'checkpoints.result.undoHint' } },
+  ])
+  assert.deepEqual(buttonsOf(restored), [['cancel', 'checkpoints.button.cancel', 'close', false], ['retry', 'checkpoints.button.retry', 'confirm', false]])
+  assert.deepEqual(viewOf('restore', []).body, [
+    { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.restoreInterrupted', params: { detail } } },
+    { kind: 'note', tone: 'info', text: { key: 'checkpoints.error.untouched' } },
+  ])
+  // 撤销点还在，弹窗里有「重试」，不另写下一步
+  const undone = viewOf('undo', ['a.txt'])
+  assert.deepEqual(undone.body, [
+    { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.undoInterruptedModified', params: { detail, paths: ['a.txt'] } } },
+  ])
+  assert.deepEqual(buttonsOf(undone), [['cancel', 'checkpoints.button.cancel', 'close', false], ['retry', 'checkpoints.button.retry', 'undo', false]])
+  assert.deepEqual(viewOf('undo', []).body, [
+    { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.undoInterrupted', params: { detail } } },
+    { kind: 'note', tone: 'info', text: { key: 'checkpoints.error.untouched' } },
   ])
 })
 
@@ -528,7 +585,7 @@ test('checkpointsDialogView：两样都做——恢复完正在分叉，分叉�
     { kind: 'result', tone: 'success', text: { key: 'checkpoints.result.restored', params: { n: '7' } } },
   ])
   assert.deepEqual(buttonsOf(working), [['cancel', 'checkpoints.button.done', 'close', true], ['primary', 'checkpoints.working.fork', 'confirm', true]])
-  const failed = checkpointsDialogView(reduceDialog(restored, { type: 'failed', token: 1, step: 'fork', failure: { reason: 'failed', message: 'session/fork denied' } }), CONTEXT)
+  const failed = checkpointsDialogView(reduceDialog(restored, { type: 'failed', token: 1, step: 'fork', failure: { reason: 'failed', message: 'session/fork denied', detail: 'session/fork denied' } }), CONTEXT)
   assert.deepEqual(failed.body[1], { kind: 'result', tone: 'error', text: { key: 'checkpoints.error.fork', params: { reason: { text: 'session/fork denied' } } } })
   assert.deepEqual(buttonsOf(failed), [['cancel', 'checkpoints.button.done', 'close', false], ['retry', 'checkpoints.button.retry', 'confirm', false]])
 })
@@ -604,16 +661,33 @@ test('createCheckpointsApi：失败统一成 { ok: false, reason, message }—�
   }
   const offline = createCheckpointsApi(fakeFetch({ preview: new TypeError('Failed to fetch') }).fetchImpl)
   assert.deepEqual(await offline.preview('s1', 3), { ok: false, reason: 'disconnected', message: 'Failed to fetch' })
-  // 根行关掉后路由不在（DSH 的 404 页，不是 JSON）
+  // 根行关掉后路由不在（DSH 的 404 页，不是 JSON）：HTTP 状态码也记进 detail，页面原样显示它
   const missing = createCheckpointsApi(fakeFetch({}).fetchImpl)
-  assert.deepEqual(await missing.list('s1'), { ok: false, reason: 'failed', message: 'HTTP 404' })
+  assert.deepEqual(await missing.list('s1'), { ok: false, reason: 'failed', message: 'HTTP 404', detail: 'HTTP 404' })
   // ok: true 但字段不对、没写 message 的失败
   const odd = createCheckpointsApi(fakeFetch({
     preview: { status: 200, body: { ok: true, files: 'nope' } },
     undo: { status: 409, body: { ok: false, reason: 'busy' } },
   }).fetchImpl)
-  assert.deepEqual(await odd.preview('s1', 3), { ok: false, reason: 'failed', message: 'HTTP 200' })
+  assert.deepEqual(await odd.preview('s1', 3), { ok: false, reason: 'failed', message: 'HTTP 200', detail: 'HTTP 200' })
   assert.deepEqual(await odd.undo('s1'), { ok: false, reason: 'busy', message: 'HTTP 409' })
+})
+
+test('chore#106 createCheckpointsApi：失败回答里的数据字段（detail、cwd、operation、changed）核过类型再交回，类型不对的丢掉', async () => {
+  const api = createCheckpointsApi(fakeFetch({
+    restore: { status: 500, body: { ok: false, reason: 'failed', message: 'x', operation: 'restore', changed: ['a.txt', 7, 'src/b.txt'], detail: 'EACCES: permission denied' } },
+    preview: { status: 409, body: { ok: false, reason: 'not-in-repo', message: 'x', cwd: '/Users/me/app' } },
+    undo: { status: 500, body: { ok: false, reason: 'failed', message: 'x', operation: 'merge', changed: ['a.txt'], detail: 3, cwd: null } },
+  }).fetchImpl)
+  assert.deepEqual(await api.restore('s1', 3),
+    { ok: false, reason: 'failed', message: 'x', operation: 'restore', changed: ['a.txt', 'src/b.txt'], detail: 'EACCES: permission denied' })
+  assert.deepEqual(await api.preview('s1', 3), { ok: false, reason: 'not-in-repo', message: 'x', cwd: '/Users/me/app' })
+  // operation 不是 restore、undo 时 changed 一起丢掉（只有写回中途失败才带这两项）
+  assert.deepEqual(await api.undo('s1'), { ok: false, reason: 'failed', message: 'x' })
+  // 读 list 失败时数据层记下的原因也带着 detail，入口的提示要用它
+  const broken = createCheckpointsApi(fakeFetch({ list: { status: 500, body: { ok: false, reason: 'failed', message: '处理请求时出错：EIO', detail: 'EIO: i/o error, read' } } }).fetchImpl)
+  await broken.list('s1')
+  assert.deepEqual(broken.peek('s1').error, { reason: 'failed', message: '处理请求时出错：EIO', detail: 'EIO: i/o error, read' })
 })
 
 test('createCheckpointsApi：list 里写坏的记录跳过，别的照常', async () => {
@@ -857,7 +931,7 @@ test('runCheckpointsTask：只恢复文件、只分叉、分叉失败、已经�
   const broken = taskDeps({ forkError: new Error('session/fork denied') })
   const brokenEvents = []
   await runCheckpointsTask('fork', TASK, broken.deps, event => { brokenEvents.push(event) })
-  assert.deepEqual(brokenEvents, [{ type: 'failed', token: 4, step: 'fork', failure: { reason: 'failed', message: 'session/fork denied' } }])
+  assert.deepEqual(brokenEvents, [{ type: 'failed', token: 4, step: 'fork', failure: { reason: 'failed', message: 'session/fork denied', detail: 'session/fork denied' } }])
 
   const retried = taskDeps()
   const retriedEvents = []
@@ -948,6 +1022,129 @@ test('W-O02 撤销一个文件都没动时开头写「没有撤销」；刚恢�
   assert.deepEqual(buttonsOf(view), [['cancel', 'checkpoints.button.done', 'close', false], ['retry', 'checkpoints.button.retry', 'undo', false]])
 })
 
+// ---------- chore#106：报错跟界面语言走 ----------
+
+/** 照 DSH 的 locale.bind 读词条：{name} 换成参数；键不在词典里时报错，不拿键名当句子。 */
+const translatorOf = dictionary => (key, params = {}) => {
+  assert.ok(Object.hasOwn(dictionary, key), `词典里没有 ${key}`)
+  return dictionary[key].replace(/\{(\w+)\}/g, (hole, name) => (Object.hasOwn(params, name) ? String(params[name]) : hole))
+}
+
+/** 写回失败、快照失败时 git 的原始报错（系统原文，页面原样附在句子里）。 */
+const RAW_CHECKOUT_ERROR = 'git checkout-index failed: error: unable to create file locked/x.txt: Permission denied'
+const RAW_WRITE_TREE_ERROR = 'git write-tree failed: fatal: unable to write new index file'
+
+/** 宿主答的几种失败，字段照接口文档；message 是宿主写给日志的中文，页面不显示。 */
+const HOST_FAILURES = {
+  restoreInterrupted: {
+    status: 500,
+    body: {
+      ok: false, reason: 'failed', operation: 'restore', changed: ['a.txt', 'src/b.txt'], detail: RAW_CHECKOUT_ERROR,
+      message: `恢复中途失败：${RAW_CHECKOUT_ERROR}。已修改：a.txt、src/b.txt。撤销点已保留，可撤销。`,
+    },
+  },
+  undoInterrupted: {
+    status: 500,
+    body: {
+      ok: false, reason: 'failed', operation: 'undo', changed: [], detail: RAW_CHECKOUT_ERROR,
+      message: `撤销中途失败：${RAW_CHECKOUT_ERROR}。尚未修改任何文件。撤销点已保留，可撤销。`,
+    },
+  },
+  notInRepo: {
+    status: 409,
+    body: { ok: false, reason: 'not-in-repo', cwd: '/Users/me/code/app', message: '工作目录 /Users/me/code/app 已不在 git 仓库中。' },
+  },
+  previewCrashed: {
+    status: 500,
+    body: { ok: false, reason: 'failed', detail: RAW_WRITE_TREE_ERROR, message: `处理请求时出错：${RAW_WRITE_TREE_ERROR}` },
+  },
+}
+
+/**
+ * 宿主答了一种失败之后，弹窗正文每一行按给的词典读出来的样子：走数据层、runCheckpointsTask、
+ * reduceDialog、checkpointsDialogView 和 checkpointsSay，和界面上一样。
+ * @param {'restore' | 'undo' | 'preview'} task 失败的请求。
+ * @param {{status: number, body: object}} answer 宿主的回答。
+ * @param {Record<string, string>} dictionary CHECKPOINTS_ZH 或 CHECKPOINTS_EN。
+ * @returns {Promise<string[]>} 正文的每一行。
+ */
+async function failureLines(task, answer, dictionary) {
+  const api = createCheckpointsApi(fakeFetch({ [task]: answer }).fetchImpl)
+  let state
+  if (task === 'preview') {
+    const failure = await api.preview('s1', 3)
+    state = run([{ type: 'open', token: 1, target: TARGET, forkAllowed: true }, { type: 'previewFailed', token: 1, failure }])
+  } else {
+    state = task === 'undo' ? reduceDialog(readyState(), { type: 'undo' }) : run([{ type: 'choose', choice: 'files' }, { type: 'confirm' }], readyState())
+    await runCheckpointsTask(task, { ...TASK, token: 1 }, { api, fork: forkDeps().deps }, event => { state = reduceDialog(state, event) })
+  }
+  const t = translatorOf(dictionary)
+  return checkpointsDialogView(state, CONTEXT).body.map(block => checkpointsSay(t, block.text))
+}
+
+test('chore#106 中文界面：恢复、撤销中途失败，工作目录不在 git 仓库中，算文件列表出错——句子是中文，原始报错原样出现', async () => {
+  const lines = []
+  const say = async (task, answer) => {
+    const result = await failureLines(task, answer, CHECKPOINTS_ZH)
+    lines.push(...result)
+    return result
+  }
+  assert.deepEqual(await say('restore', HOST_FAILURES.restoreInterrupted), [
+    `恢复中途失败：${RAW_CHECKOUT_ERROR}。已修改：a.txt、src/b.txt。`,
+    '恢复前的状态已保存为检查点，可撤销。',
+  ])
+  assert.deepEqual(await say('undo', HOST_FAILURES.undoInterrupted), [
+    `撤销中途失败：${RAW_CHECKOUT_ERROR}。`,
+    '文件没有改动。',
+  ])
+  assert.deepEqual(await say('restore', HOST_FAILURES.notInRepo), [
+    '未恢复：工作目录 /Users/me/code/app 已不在 git 仓库中。',
+    '文件没有改动。',
+  ])
+  assert.deepEqual(await say('undo', HOST_FAILURES.notInRepo), [
+    '未撤销：工作目录 /Users/me/code/app 已不在 git 仓库中。',
+    '文件没有改动。',
+  ])
+  assert.deepEqual(await say('preview', HOST_FAILURES.previewCrashed), [`无法计算将变更的文件：${RAW_WRITE_TREE_ERROR}`])
+  // 「未恢复：恢复中途失败」这种重复不再出现；宿主写给日志的 message 不上界面
+  for (const line of lines) {
+    assert.doesNotMatch(line, /未恢复：恢复中途失败|未撤销：撤销中途失败|撤销点已保留|尚未修改任何文件|处理请求时出错/u, line)
+  }
+})
+
+test('chore#106 英文界面：同样的失败写成英文句子，不夹中文，原始报错原样出现', async () => {
+  const lines = []
+  const say = async (task, answer) => {
+    const result = await failureLines(task, answer, CHECKPOINTS_EN)
+    lines.push(...result)
+    return result
+  }
+  assert.deepEqual(await say('restore', HOST_FAILURES.restoreInterrupted), [
+    `Restore failed partway through: ${RAW_CHECKOUT_ERROR}. Modified: a.txt, src/b.txt.`,
+    'The pre-restore state was saved as a checkpoint and can be undone.',
+  ])
+  assert.deepEqual(await say('undo', HOST_FAILURES.undoInterrupted), [
+    `Undo failed partway through: ${RAW_CHECKOUT_ERROR}.`,
+    'No files were changed.',
+  ])
+  assert.deepEqual(await say('restore', HOST_FAILURES.notInRepo), [
+    'Not restored: The working directory /Users/me/code/app is no longer in a git repository.',
+    'No files were changed.',
+  ])
+  assert.deepEqual(await say('undo', HOST_FAILURES.notInRepo), [
+    'Not undone: The working directory /Users/me/code/app is no longer in a git repository.',
+    'No files were changed.',
+  ])
+  assert.deepEqual(await say('preview', HOST_FAILURES.previewCrashed), [`Could not calculate the files to change: ${RAW_WRITE_TREE_ERROR}`])
+  for (const line of lines) assert.doesNotMatch(line, /[　-〿㐀-鿿＀-￯]/u, line)
+})
+
+test('chore#106 中英文词条一一对应，占位符一样', () => {
+  const holes = text => [...text.matchAll(/\{(\w+)\}/g)].map(match => match[1]).sort()
+  assert.deepEqual(Object.keys(CHECKPOINTS_EN).sort(), Object.keys(CHECKPOINTS_ZH).sort())
+  for (const key of Object.keys(CHECKPOINTS_ZH)) assert.deepEqual(holes(CHECKPOINTS_EN[key]), holes(CHECKPOINTS_ZH[key]), key)
+})
+
 // ---------- 配置页 ----------
 
 test('配置页的草稿：数字要是正整数，别的字段照读到的带回去；勾选预设', () => {
@@ -988,12 +1185,12 @@ test('配置页保存：读到整份配置、改「每个文件最多保存」�
   const written = await api.config.write(config)
   assert.deepEqual(calls.at(-1).body, { keepDays: 14, maxStoreMB: 2048, skipPresets: ['whale'], waitSeconds: 5, maxFileMB: 8 })
   assert.deepEqual(written, { ok: true, config: { keepDays: 14, maxStoreMB: 2048, skipPresets: ['whale'], waitSeconds: 5, maxFileMB: 8 } })
-  // 宿主拒绝时（比如数字不是正整数）回答原样交回，配置页把 message 写在保存按钮旁边
-  const refuse = createCheckpointsApi(fakeFetch({ config: { status: 400, body: { ok: false, reason: 'bad-request', message: 'checkpoints config maxFileMB must be a positive integer' } } }).fetchImpl)
-  assert.deepEqual(await refuse.config.write({ ...config, maxFileMB: 0 }),
-    { ok: false, reason: 'bad-request', message: 'checkpoints config maxFileMB must be a positive integer' })
-  assert.deepEqual(checkpointsReasonText({ reason: 'bad-request', message: 'checkpoints config maxFileMB must be a positive integer' }),
-    { text: 'checkpoints config maxFileMB must be a positive integer' })
+  // 宿主拒绝时（比如数字不是正整数）回答原样交回，配置页在保存按钮旁边写「请求无效」，后面附上校验的原文（detail）
+  const refusal = 'checkpoints config maxFileMB must be a positive integer'
+  const refuse = createCheckpointsApi(fakeFetch({ config: { status: 400, body: { ok: false, reason: 'bad-request', message: refusal, detail: refusal } } }).fetchImpl)
+  const refused = await refuse.config.write({ ...config, maxFileMB: 0 })
+  assert.deepEqual(refused, { ok: false, reason: 'bad-request', message: refusal, detail: refusal })
+  assert.deepEqual(checkpointsReasonText(refused), { key: 'checkpoints.reason.badRequestDetail', params: { detail: refusal } })
 })
 
 // ---------- 挂载和撤销 ----------

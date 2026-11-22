@@ -263,10 +263,30 @@ test('routes：config 读写（GET 默认、POST 校验保存、坏体 400）', 
     assert.equal(missing.status, 400)
     const bad = await post(route, { keepDays: -1, maxStoreMB: 100, skipPresets: [], waitSeconds: 3, maxFileMB: 2 })
     assert.equal(bad.status, 400)
-    assert.equal((await bad.json()).reason, 'bad-request')
+    const badBody = await bad.json()
+    assert.equal(badBody.reason, 'bad-request')
+    // 校验的原文放进 detail，网页端附在「请求无效：」后面（chore#106）。
+    assert.equal(badBody.detail, 'checkpoints config keepDays must be a positive integer')
     const notJson = await route.fetch(new Request('http://dsh/api', { method: 'POST', body: 'nope' }))
     assert.equal(notJson.status, 400)
   } finally {
     await rm(scene.work, { recursive: true, force: true })
+  }
+})
+
+test('chore#106 routes：处理函数抛错时答 500 failed，detail 是原始报错，不带宿主拼的句子', async () => {
+  const routes = new Map()
+  const scope = {
+    effect: fn => { const dispose = fn(); return () => dispose() },
+    connection: { fetch: { register: route => { routes.set(route.path, route); return () => routes.delete(route.path) } } },
+  }
+  const boom = async () => { throw new Error('EIO: i/o error, read') }
+  registerCheckpointsRoutes(scope, { list: boom, preview: boom, restore: boom, undo: boom, configFetch: boom })
+  for (const suffix of ['preview', 'restore', 'undo']) {
+    const response = await post(routes.get(`/api/dsh-workbench.checkpoints.${suffix}`), { sessionId: 's1', turn: 1 })
+    assert.equal(response.status, 500, suffix)
+    const body = await response.json()
+    assert.equal(body.reason, 'failed', suffix)
+    assert.equal(body.detail, 'EIO: i/o error, read', suffix)
   }
 })
